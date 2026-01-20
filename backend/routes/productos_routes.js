@@ -3,6 +3,8 @@ const router = express.Router();
 const connection = require("../database/db");
 const multer = require("multer");
 const path = require("path");
+const { resourceUsage } = require("process");
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 // Configuración de multer (mismo estilo que uploads_routes)
 const storage = multer.diskStorage({
@@ -20,13 +22,14 @@ const upload = multer({ storage });
 // get productos
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await connection.query("SELECT * FROM productos");
+    const result = await connection.query("SELECT * FROM productos");
+    const rows = result.rows
 
     // agregar URL de la imagen
     const productos = rows.map(p => ({
       ...p,
       imagen_url: p.imagen 
-        ? `http://localhost:3000/uploads/${p.imagen}`
+        ? `${BASE_URL}/uploads/${p.imagen}`
         : null
     }));
 
@@ -50,27 +53,13 @@ router.post("/add", upload.single("imagen"), async (req, res) => {
 
     const sql = `
       INSERT INTO productos (nombre, precio, descripcion, stock, category, imagen)
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
     `;
 
-    await connection.query(sql, [
-      nombre,
-      precio,
-      descripcion,
-      stock,
-      categoria,
-      imagen
-    ]);
-
-    const nuevoProducto = {
-      nombre,
-      precio,
-      descripcion,
-      stock,
-      categoria,
-      imagen,
-      imagen_url: `http://localhost:3000/uploads/${imagen}`
-    };
+    const { rows } = await connection.query(sql, [nombre, precio, descripcion, stock, categoria, imagen]);
+    const nuevoProducto = rows[0];
+    nuevoProducto.imagen_url = `${BASE_URL}/uploads/${nuevoProducto.imagen}`;
 
     // EMITIR EVENTO A TODOS LOS CLIENTES
     const io = req.app.get("socketio");
@@ -92,16 +81,18 @@ router.get("/categoria/:categoria", async (req, res) => {
   try {
     const categoria = req.params.categoria;
 
-    const [rows] = await connection.query(
-      "SELECT * FROM productos WHERE category = ?",
+    const result = await connection.query(
+      "SELECT * FROM productos WHERE category = $1",
       [categoria]
     );
+
+    const rows = result.rows;
 
     // agregar URL de la imagen, igual que en la ruta principal
     const productos = rows.map(p => ({
       ...p,
       imagen_url: p.imagen
-        ? `http://localhost:3000/uploads/${p.imagen}`
+        ? `${BASE_URL}/uploads/${p.imagen}`
         : null
     }));
 

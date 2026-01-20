@@ -70,6 +70,7 @@ export class HomeComponent {
     this.socketService.listen("nuevo_producto").subscribe((producto) => {
       console.log("Producto recibido por WebSocket:", producto);
       this.productos.push(producto); // se agrega automáticamente
+      this.productosOriginales.push(producto);
     });
 
     this.socketService.listen("nuevo_stock").subscribe((objeto) => {
@@ -79,6 +80,11 @@ export class HomeComponent {
       if (producto) {
         producto.stock = stock;
       }
+    });
+
+    this.socketService.listen("nueva_fecha").subscribe((fecha) => {
+      console.log("new date close: ", fecha);
+      this.fecha_cierre = fecha;
     })
   }
 

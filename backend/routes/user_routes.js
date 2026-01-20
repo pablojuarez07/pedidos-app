@@ -14,10 +14,12 @@ router.post("/login", async (req, res) => {
     }
 
     // buscar admin
-    const [rows] = await connection.query(
-      "SELECT * FROM admin WHERE email = ?",
+    const result = await connection.query(
+      "SELECT * FROM admin WHERE email = $1",
       [email]
     );
+
+    const rows = result.rows;
 
     if(rows.length === 0){
       return res.status(401).json({ error: "Usuario o contraseña incorrectos"});
@@ -54,9 +56,11 @@ router.post("/change-password", async (req, res) => {
   }
 
   try {
-    const [rows] = await connection.query(
+    const result = await connection.query(
       "SELECT password FROM admin LIMIT 1"
     );
+
+    const rows = result.rows;
 
     if (rows.length === 0) {
       return res.status(500).json({ error: "Admin no encontrado" });
@@ -70,7 +74,7 @@ router.post("/change-password", async (req, res) => {
     const hashed = await bcrypt.hash(newPassword, 10);
 
     await connection.query(
-      "UPDATE admin SET password = ? LIMIT 1",
+      "UPDATE admin SET password = $1",
       [hashed]
     );
 
@@ -92,7 +96,7 @@ router.post("/change-email", async (req, res) => {
 
   try {
     await connection.query(
-      "UPDATE admin SET email = ? LIMIT 1",
+      "UPDATE admin SET email = $1",
       [email]
     );
 
@@ -100,7 +104,7 @@ router.post("/change-email", async (req, res) => {
 
   } catch (err) {
     // Email único
-    if (err.code === "ER_DUP_ENTRY") {
+    if (err.code === "23505") {
       return res.status(409).json({ error: "Email ya en uso" });
     }
 
@@ -119,9 +123,12 @@ router.post("/change-cierre", async (req, res) => {
 
   try {
     await connection.query(
-      "UPDATE admin SET cierre_campania = ? LIMIT 1",
+      "UPDATE admin SET cierre_campania = $1",
       [cierreCampania]
     );
+
+    const io = req.app.get("socketio");
+    io.emit("nueva_fecha", cierreCampania);
 
     res.json({
       ok: true,
@@ -136,9 +143,11 @@ router.post("/change-cierre", async (req, res) => {
 
 router.get("/admin", async (req, res) => {
   try {
-    const [rows] = await connection.query(
+    const result = await connection.query(
       "SELECT email, cierre_campania FROM admin LIMIT 1"
     );
+
+    const rows = result.rows;
 
     res.json(rows[0]);
   } catch (err) {

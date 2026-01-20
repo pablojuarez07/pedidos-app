@@ -301,5 +301,6 @@
 
   .contact-card {
     min-width: 70vw;
+    margin-bottom: 5vh;
   }
 }
