@@ -1,0 +1,258 @@
+/* --- Fondo borroso detrás del formulario --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* --- Caja del formulario --- */
+.add-form-container {
+  position: relative;
+  background: #fff;
+  width: 50vw;
+  max-height: 85vh;
+  padding: 6vh;
+  border-radius: 14px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3vh;
+  z-index: 1000;
+}
+
+/* Título */
+.add-form-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #334;
+}
+
+/* --- Estilos de inputs --- */
+.add-form-container label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1vh;
+}
+
+.form-control {
+  width: 96%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #446;
+  box-shadow: 0 0 5px rgba(68, 68, 102, 0.4);
+}
+
+#descripcion {
+  width: 96%;
+  height: 10vh;
+  padding: 12px;
+  resize: none;   
+  scrollbar-width: none;
+}
+
+/* --- Botón --- */
+button {
+  width: 20vh;
+  padding: 12px;
+  margin-top: 8px;
+  background: #334;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #445;
+}
+
+/* Estado: deshabilitado */
+.disabled-btn {
+  background: #777 !important;
+  cursor: not-allowed;
+}
+
+/* Botón cerrar arriba a la derecha */
+.cerrar_btn {
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  background: #c44;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+/* Caja drag & drop */
+.dropzone {
+  width: 99%;
+  height: 150px;        /* << más grande y visible */
+  border: 2px dashed #667;
+  border-radius: 12px;
+  display: flex;         /* << centrado vertical */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #f7f7f7;
+  font-size: 16px;       /* texto más legible */
+  position: relative;
+  cursor: pointer;
+  margin-top: 1vh;
+}
+
+
+/* Input file invisible */
+.dropzone input[type="file"] {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Estilo cuando el archivo está encima */
+.dropzone.dragover {
+  background: #dde3ff;
+  border-color: #334;
+  color: #223;
+}
+
+.cerrar_btn:hover {
+  background: #a33;
+}
+
+.btn_enviar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.btn_enviar button {
+  width: 20vw;
+  height: 6vh;
+}
+
+.custom-select {
+  position: relative;
+  width: 96%;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1vh;
+}
+
+.custom-select .selected {
+  color: #000;
+}
+
+.custom-select .selected.placeholder {
+  color: #446;
+}
+
+.custom-select .options {
+  position: absolute;
+  left: 0;
+  top: 110%;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+
+  z-index: 2000;
+}
+
+.custom-select svg {
+  position: absolute;
+  right: 12px;
+  top: 51%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  pointer-events: none; /* no interfiere con el click */
+  color: #334;
+  transition: transform 0.25s ease;
+}
+
+.custom-select.open svg {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Estado abierto con animación */
+.custom-select .options.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Items */
+.custom-select .option {
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  color: #000;
+}
+
+.custom-select .option:hover {
+  background: #eef2ff;
+}
+
+.form-add-product {
+  margin-bottom: 20px;
+}
+
+@media(max-width: 720px) {
+  .add-form-container {
+    width: 40vh;
+  }
+
+  .btn_enviar button {
+    margin-top: 20px;
+    width: 50vw;
+    height: 6vh;
+  }
+}
+
+@media(max-width: 480px) {
+  .add-form-container {
+    width: 40vh;
+  }
+}

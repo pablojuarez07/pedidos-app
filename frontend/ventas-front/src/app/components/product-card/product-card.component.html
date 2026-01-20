@@ -1,0 +1,27 @@
+<div class="card" [class.visible]="imgLoaded" [style.animationDelay]="delay + 'ms'">
+  <img [src]="producto.imagen_url" 
+       alt="{{producto.nombre}}" 
+       class="img-fixed"
+       (load)="onImgLoad()"
+       (click)="abrirImg()">
+  
+  <h2 class="product_name">{{ producto.nombre }}</h2>
+  <p class="product_descripction">{{ producto.descripcion }}</p>
+  <p class="stock_product" *ngIf="producto.stock != null"> Stock: {{ producto.stock}}</p>
+
+  <!-- CONTENEDOR PRECIO + BOTÓN -->
+  <div class="bottom-row">
+    <span class="precio">$ {{ producto.precio }} </span>
+
+    <button class="pedido-btn" (click)="seleccionarProducto()">
+      Pedir producto
+    </button>
+  </div>
+</div>
+
+<!-- Modal para ver la imagen grande -->
+<div class="modal" *ngIf="mostrarImagen" (click)="cerrarImg()">
+  <img [src]="producto.imagen_url" class="modal-img">
+</div>
+
+<app-product-info [producto]="producto" />

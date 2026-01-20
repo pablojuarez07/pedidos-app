@@ -1,0 +1,57 @@
+<div class="sheet-container">
+  <div class="sheet-scroll">
+    <div class="sheet-header">
+      <div>Comprador</div>
+      <div>Producto</div>
+      <div>Teléfono</div>
+      <div>Cant.</div>
+      <div>Precio Unit.</div>
+      <div>Total</div>
+      <div>Fecha</div>
+      <div>Estado</div>
+      <div></div>
+    </div>
+
+    <div class="sheet-body">
+      <ng-container *ngFor="let grupo of pedidosPorMes">
+
+        <!-- SEPARADOR DE MES -->
+        <div class="mes-separador">
+          {{ grupo.mes | titlecase }}
+        </div>
+
+        <!-- FILAS DEL MES -->
+        <div class="sheet-row" *ngFor="let pedido of grupo.pedidos">
+
+          <div>{{ pedido.nombre_comprador }}</div>
+          <div>{{ pedido.producto_nombre }}</div>
+          <div>{{ pedido.telefono }}</div>
+          <div>{{ pedido.cantidad }}</div>
+          <div>$ {{ pedido.precio_unitario }}</div>
+          <div class="total">$ {{ pedido.total }}</div>
+          <div>{{ pedido.fecha | date:'dd/MM/yyyy' }}</div>
+
+          <div class="estado" [ngClass]="pedido.estado">
+            {{ pedido.estado }}
+          </div>
+
+          <div class="acciones">
+            <button class="edit-btn" (click)="toggleMenu(pedido, $event)">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAADOElEQVR4nO2dva8NQRiHfwTRSCQSQaG5FIjClaBTX67LyXsk6DRqCtEodDpxEwVaIrcSUVD4I3yLRiMSH3FFd92zJ8gkc+RkMvu9s/Pa/T3JVGdnMzPPeefj3WQXIIQQQgghXjYD2ANgJ4CN/ktIaDYBuArgDYA/U2UFwFMA88FbQP5xFMAXR4SvPLHRQwIyBDAqIGNSXtloIg2yF8B5ABcAJCVkTMpSk43pO0MAqxUkuOVw7I50ASk5PWWVu7E704XISBqSYcqH2B36n5EGI2NSzP3Wxu5YVyJjBcD9mkLMOrQmdue6IOMXgDn7+zVOWXGnKfOvXnCuu1JRyO0W+9LJyFgFcCLl+rKR8hvAoZb71CkZIwAnc+qVkfKgpb50VsagYP0iUl4zdVJ9zRgDOINyZK0p7wHsKHm/XjJMOfQl9reypEXKvgBt790JPKko5Z7nXqcDtL+X6ZCkpJRj9vDonl9mAvald+mQMYBzBe4755Fh6p5toU+9y02Nc6RQRoREYZqU43ZaoowIWVtXCmUoSKFPpKSdXyijxYdL07uvUUPb5N4gAR4uZUUNIyMDylCEUIYehDL0IJShB6EMPQhl6EEoQw9CGXoQytCDUIYehDL0IJShB6EMPQhl6EEoQw9CGXoQytCDUIYehDL0IJShB6EMPVCGIihDEZShCMpQBGUogjIUQRmKoAxFUIYiKEMRlKEIylAEZSiCMhRBGYqgDEVQhiIoQxGUoQjKUARlKGK3571QoUrCd4fkc4ORoYd1AD5Thh4WnIH7CeA6p6l4PHQG707Nl9IzMmqwxfMquyMZ11NGYC56Xp2dBWUE5rkziJdzrqeMgOz3LLzbc+pQRkBuOgP5uECdvIWeMiqyHsA3ZzCLflMjbUvMrW0NBs5gfgewIafOQQCLAJYZGc3zyBnQWynXbbML/Tse+sKx1ZPVNf/62anpbGDXlLyXFZuEJGXU5FLK4C7bSHHXFl/5ahOSu+o2hgAvaqRAntmvypgoIg0wW0HEW7vdNVMdaZjFghJ+2CSj2VmRgGQ99xjZ3dcpTknt8ckj4qVNMnJKioD52thHGylm+joQoxGEEEIIIYSgNn8BqpiWi5SKB24AAAAASUVORK5CYII=" alt="pencil--v1">          </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <div 
+        class="floating-menu"
+        *ngIf="menuAbierto"
+        [style.top.px]="menuAbierto._menuTop"
+        [style.left.px]="menuAbierto._menuLeft"
+      >
+        <button (click)="cambiarEstado(menuAbierto,'pendiente')">Pendiente</button>
+        <button (click)="cambiarEstado(menuAbierto,'entregado')">Entregado</button>
+        <button (click)="cambiarEstado(menuAbierto,'cancelado')">Cancelado</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,217 @@
+/* --- Fondo borroso detrás del formulario --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* --- Caja del formulario --- */
+.admin-form-container {
+  position: relative;
+  background: #fff;
+  width: 30vw;
+  padding: 5vh;
+  border-radius: 14px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  z-index: 1000;
+}
+
+/* Título */
+.admin-form-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #334;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #446;
+  box-shadow: 0 0 5px rgba(68, 68, 102, 0.4);
+}
+
+.form_admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.field {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.password-div {
+  position: relative;
+  width: 100%;
+}
+
+.password-div .form-control {
+  flex: 1;
+  width: 100%;
+  padding-right: 45px;
+}
+
+/* --- Botón --- */
+button {
+  width: 20vh;
+  padding: 12px;
+  margin-top: 8px;
+  background: #334;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #445;
+}
+
+/* Estado: deshabilitado */
+.disabled-btn {
+  background: #777 !important;
+  cursor: not-allowed;
+}
+
+
+.toggle-password {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  position: absolute;
+  top: 51%;
+  right: 0px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  margin-top: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #272727;
+}
+
+.toggle-password:hover {
+  background-color: transparent;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+/* Botón cerrar arriba a la derecha */
+.cerrar_btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #c44;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.cerrar_btn:hover {
+  background: #a33;
+}
+
+.btn_enviar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .admin-form-container {
+    width: 60vw;
+    padding: 6vh 4vw;
+  }
+
+  .admin-form-container h2 {
+    font-size: 20px;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 15px;
+  }
+}
+
+/* 📱 Celulares medianos (480px o menos) */
+@media (max-width: 480px) {
+  .admin-form-container {
+    width: 80vw;
+    padding: 5vh 6vw;
+    border-radius: 12px;
+  }
+
+  .admin-form-container h2 {
+    font-size: 18px;
+  }
+
+  .admin-form-container label {
+    width: 93%;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .cerrar_btn {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    top: 10px;
+    right: 10px;
+  }
+}

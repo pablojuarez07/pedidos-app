@@ -1,0 +1,202 @@
+.carousel {
+  width: 100%;
+}
+
+.viewport {
+  position: relative; 
+  border-radius: 1vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  position: relative;
+  z-index: 2;
+
+}
+
+.item {
+  min-width: 100%;
+  height: 50vh;
+  position: relative;
+}
+
+/* Contenedor del slide */
+.slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Imagen de fondo */
+.bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 50vh;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Contenido encima */
+.slide-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 48px 64px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Imagen del producto */
+.producto-img {
+  width: 60%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* Texto */
+.info {
+  width: 60%;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.info h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.info .precio {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #7a9bff;
+
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(122,155,255,0.7);
+}
+
+/* Flechas */
+.btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.btn.left {
+  left: 8px;
+}
+
+.btn.right {
+  right: 8px;
+}
+
+@media (max-width: 720px) {
+  .carousel {
+    height: 100vh;
+    width: 100vw;
+    margin-top: -5vh;
+  }
+
+  .viewport {
+    height: 100vh;
+  }
+
+  /* Ocultar fondo */
+  .bg-img {
+    display: none;
+  }
+
+  /* Ajustar slide */
+  .item {
+    height: 100vh;
+  }
+
+  .slide {
+    height: 100vh;
+  }
+
+  .slide-content {
+    flex-direction: column;
+    margin-top: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .producto-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0px;
+  }
+
+  /* Caja flotante */
+  .info {
+    position: absolute;
+    bottom: 13vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background: rgba(61, 61, 61, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 16px 18px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  .info h2 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+    color: white;
+  }
+
+  .info .precio {
+    font-size: 20px;
+    font-weight: 700;
+    color: #7a9bff;
+  }
+
+  .btn {
+    display: none;
+  }
+}

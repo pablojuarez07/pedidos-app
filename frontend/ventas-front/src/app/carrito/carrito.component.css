@@ -1,0 +1,262 @@
+.btn-pedidos {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid white;
+  background: #222;
+  color: white;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.btn-pedidos:hover {
+  background-color: #3d3d3d;
+}
+
+.btn-pedidos svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15); /* un leve tinte */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(8px); /* Safari */
+  z-index: 9;
+}
+
+.panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 30vw;
+  height: 93vh;
+  background: #252525;
+  padding: 16px;
+  z-index: 10;
+  box-shadow: -4px 0 10px rgba(0,0,0,.2);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: top right;
+}
+
+.scroll-div {
+  flex: 1; 
+  background-color: transparent;
+  overflow-y: auto;  
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
+  height: 90%;
+  gap: 5px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 15px;
+  margin-right: 15px;
+  color: white;
+}
+
+.pedido-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
+  justify-content: center;
+}
+
+.pedido_img {
+  width: 10vw;
+  height: auto;
+  max-height: 30vh;
+  border-radius: 10px;
+  margin: auto 0;
+}
+
+.pedido-card p {
+  color: white;
+}
+
+.panel h2{
+  color: white;
+  margin-left: 30%;
+}
+
+.empty {
+  color: white;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.estado {
+  border-radius: 3px;
+  width: 20vh;
+  height: 4vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pendiente {
+  background-color: #d4c92b;
+}
+
+.cancelado {
+  background-color: #a10d0d;
+}
+
+.entregado {
+  background-color: #0fa958;
+}
+
+.btn_cancelar {
+  background-color: #a10d0d;
+  width: 20vh;
+  height: 5vh;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn_cancelar:hover {
+  background-color: #c40f0f;
+}
+
+.btn_cancelar:active {
+  transform: scale(1.1);
+}
+
+
+.btn-wrapper {
+  position: relative;
+}
+
+.confirm-box {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  transform: translateY(-100%);
+  background: #111;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 8px;
+  width: 180px;
+  z-index: 20;
+  box-shadow: 0 0 10px rgba(0,0,0,.6);
+  animation: pop .15s ease-out;
+}
+
+.confirm-box p {
+  color: white;
+  font-size: 12px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.confirm-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.confirm-actions .ok {
+  background: #0fa958;
+  color: white;
+}
+
+.confirm-actions .no {
+  background: #555;
+  color: white;
+}
+
+.btn_cancelar.cancelado {
+  background: #0f6aa9;
+}
+
+@media (max-width: 720px) {
+  .btn-pedidos {
+    width: 6vh;
+    height: 6vh;
+  }
+
+  .btn-pedidos svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .pedido-info p {
+    font-size: 12px;
+  }
+
+  .panel {
+    width: 75vw;
+  }
+
+  .panel h2 {
+    top: 0;
+  }
+
+  .scroll-div {
+    padding: 1px;
+    display: flex;
+    align-items: center;
+  }
+
+  .pedido-card {
+    width: 64vw;
+    gap: 15px;
+    max-height: 50vh;
+    padding: 10px;
+  }
+
+  .pedido_img {
+    width: 45%;
+    height: 20vh;
+    margin: auto 0;
+  }
+
+  .estado {
+    width: 13vh;
+    font-size: 20px;
+  }
+
+  .btn_cancelar {
+    width: 13vh;
+  }
+}

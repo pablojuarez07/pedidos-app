@@ -1,0 +1,97 @@
+<!-- BOTÓN FLOTANTE PARA ABRIR/CERRAR -->
+<div class="fondo_btn_menu"
+     [@outLeft]="isVisible ? 'expanded' : 'collapsed'"
+     [class.expanded]="isVisible"
+     [class.hide]="!headerVisible">
+  <button 
+    type="button" 
+    class="menu_toggle_btn"
+    (click)="showMenu()">
+
+    <svg *ngIf="!isVisible" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" 
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+    </svg>
+
+    <svg *ngIf="isVisible" fill="none" stroke-width="1.5" stroke="currentColor" 
+        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+</div>
+
+<!-- MENU LATERAL -->
+<div class="menu_lateral"
+    [@outLeft]="isVisible ? 'expanded' : 'collapsed'"
+    [class.expanded]="isVisible" >
+
+  <button type="button" (click)="buscarProductoCategoria(null); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAY0lEQVR4nO2UQQqAMAwE53n6MH2ofsKe1kt7axRJqIgZ2FPbHQihkDxgBQogZwqw9AQR5ao5eoJ26EVWzzCBgjJeEDEm3b1PgVLQsFbyOwKL9wV7wBexXQnmesFTPjkmwA85AX+rqGl4hKijAAAAAElFTkSuQmCC" 
+         alt="product">
+    <span class="btn-text">Todos</span>
+  </button>
+
+  <button type="button" (click)="buscarProductoCategoria('Maquillaje'); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE50lEQVR4nO2bbYiVRRTHf3crtY0oXQ0isDB6YYvCSgki+yC9GUsvJrWufjBDEFKyLXohbOiF3lajghAz+lL0rT5lbVJ9ijCijPoUlZZGQWVkKltt3hg4z3KYnue5z8vM3LuX+4dhWe7MmXP+M3POzJl5IB23ALcCJxAexwEXAcuAVcBG4H7gPmCd6DIIzCASbgeaUr6W/xue+1gMPAF8APyp+ssr/wAfS7srAug0BZPS+WfAtdTDacAo8FVBg1uVb4HNwFwiENCU8iFweUl5/aLo4Ry5PwA7gdeAF4CngGeB7cA7wHfAvxltrdytwEAIAvakTNFjwFuyLlvBLp/9GUq/CqwAziio12zgJmAbcDBF5i/AWh9LwyihRqbui8BfToeTwMvAnAw5V6Uo+SVwJ3ByTR1nArfJ0nT7eLvusjAOAQnOBt6QGaA7/BlYkiJnqTM668Xj+4Qd7RtliWid7Ky7xDcBCazg95wOJ4Ah/o+V4vhOJSxOBJ5xBueQDIJ3AhIsl5FN6lpfcTHthd1L/OYMzNJQBFicCxxwwqXvaa6n+wgw3MLRDUpU0TPh0lAEIMK1g7S7Od9oiPdP+rBLKw/zHRL2l3GMpiQBFk+qNjZuhzS+KeG1FQad5bCzaIg0FQiYrxzQ3x43JWnGbysR65c5jtGG4CAEWOxW7a6n/cYnGFPtfy0yOKYiAa+UZdqD8fa0ugFYk0OM3YrvVXKeC0XAY6rdw8Qx/k1Vx4blLNys6h2R3W0mqhJQtZ0P4225poXcz1XdRzuRgEYN403JPMc+oK+TCAhtfHKA0qdIe1jzakjVdjGMT7BdtbVnB6+GVGkX03jEUSbtP82qtLritrZKu5URjUf2AElmyf49Ka1SnxiwKs9ReGo3EtH4BHpPsJA2oyGnu+FIxlu8q+QN06EIZTySxktk3s00Mf4Rj/K3KLmbs5Icbo4tr0zKutri4RQYcuTTtuxPp1W4t4TxbvkeWNDBxrszwGTNgG9qkLC7wpE1lvGuDxj1IXCGXKROKMFpafJOMN5iXPUz4lOwzgfc06HGIwehpK/F7SZgY2Tj3Z3gKb6WwApnCVxZsO2aiMYjSzXp7wv3x7niIfdKaIvhBBuSrclLZvjEDqXn8/qHBRLCqhrtIwyGxizgd6Xr1I2RHYVPahg9KRunMZ939AGgT54/6husJeqHCTkzR3uPEwkNWfOJnfYiZwqj6ge7SehGLHcG+XTf2dy8M4V9y3MO7UO/E/tfciuYQAQ8pOQ+SPuwVelhneC8WASYyDE+DUPO3eBdaZVMlxJwoRP2xrP2J6YLCTjTebjxk+v4upmAQedxxNFWbxtNFxEw5Ex7G/JuaNXIdAEB/eLtjzm3wIXOGGYaE9CQTY6O801ZApe1W1ETkIBZsrfX21v9RmleJyhqcuReBzxe8q3wgJzndzjrPCkHJb/gVdE6yJI7IA+p3Clr4/Tr6rX4mJxNxiVHkfVa/Kikt2f7VrQusuTaNNQfHnIPlpQHyk73MoqGlHu+3Pa8L966iMF2pD+SpbPI5xcjps1O0GaGzwOuBu5wcosbJI5fABzvUbdKisaSe0i1q/tdQSGYHgH0CGj2CKBHQLNHAD0Cdsl3uz7KrulIQDNQ6WgCVkcgoMyDyz0qj1fmnWJl9ImC9gQWopR9cHkWsKngp7m18R9ZD53qGo4UAQAAAABJRU5ErkJggg==" 
+         alt="makeup--v2">
+    <span class="btn-text">Maquillaje</span>
+  </button>
+
+  <button type="button" (click)="buscarProductoCategoria('Perfumes'); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,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" 
+         alt="perfume--v1">
+    <span class="btn-text">Perfumes</span>
+  </button>
+
+  <button type="button" (click)="buscarProductoCategoria('Cremas'); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAADgUlEQVR4nO2ay0sVcRTHv2lqm8AsXBiE5C1XLbIHborohZXLnrooopSuQouivGGLKCrCdr0jpVoEUdfWvaxFUBGlf0CZdxFI0MsgK/PGge/QMMzMvd07v8fl+oHf6vzmfM9hZs6cMzNAfiwAcAPABwBpxUs0rgOIwRCrAXzXkKh3jQFYpTvZKgAfGUA/gEUAShXqlVLjHjVHAVRCI/sp/BzANI26ovWC2p0adXGToh3QTye15X7WnvBO6GcXtSUGbZyi6FEf2zwAewC0KVp3qX1SZ8J7KdrnY3MKi+q1W2fCayj61Me2EsBlxeuY7io9nwmnUCRMB/ALwB8AM1AkvOVZrkeRcJ8Jb9SoWcMqvQIGuGSg44lT8xwM0EXxHo2aZ6l5CAbY4hoedNFPzc0wwBKKD2nUHKJmAwxQ6ZpPdfGNmlqbDjefGEA1MiPP61o2Le5Vm+WzvJpaommMVwyiMWTPTLaD4yF98ThfFc0K8dPIvaJpjNsMoiXAXsJ+O82ubIQNi3uN0CZ7nvAYP1q4RzSNcZpBdAfYW2l/D6AuxE+MicveHQF7umkXTWO0MYjeAPsF2g9k4esg954PsPfSLprGWMcgBgLsfbTLW4ps32T4zdjg5S72tTBIHYOQy1F1winapbIbHRN/s+hUKEy4ghqiVQbDvGOgCxUmXE+bVHXjPGQwTQoT3kDbA1jAFQYjo5uqKt1BmzQwxukKGRNbXUUtluGjXCrkOdxDm2gZZyuDSfrYpMC8pH0ypNOadH26kULoJUm7aBlnKYMZDOmlL2bopX/w3g2agga5T7SMU8VgZHRTNS05Y6FoWcFnBjRHgW9nLBQNa3jNoJYr8G3FWOjlDoPajuixYiz0coZBHUH0WDEWetnHoK4ieq7RdzssYj2DeqTA9wB9yyhqDTEGNazAt9OBhb0x0U4ZgAmu8gj9OmPhhA1joZdhngnpi6PCGQtlBLWOWxzQo3wj0aSwNuRNOX9oUfG1UEX1txJnLEygSEgy4W0oEt4w4WWwlGc5/G8lc/KmAH9fuGc2LCWdY8JB/4k4e6wlHXGAUwnbRnoq4X+UcMQ77FntId+ECzrhhpDCtTgHfwVxhuN8c+Fe8UI+w2MMUH4RzJe59PUVFvM4wk8iCZsnJYdmBvmTSdfkeGYT9JEO6cKs4USOHZffOo4CoZmXonNP/8+SY+RYJWf2L5rt1IStCCUmAAAAAElFTkSuQmCC" 
+         alt="external-cream-hygiene-vitaliy-gorbachev-lineal-vitaly-gorbachev-1">
+    <span class="btn-text">Cremas</span>
+  </button>
+
+  <button type="button" (click)="buscarProductoCategoria('Otro'); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAADWElEQVR4nO3cO2sVQRQH8L8KKhjTmNioaFRMYuOjlIjE+AXUIIp1LFRSiXaafAYJWCsWvkgKsQsSE6MSjUrwUam1ppGkuArekYEJXA6ThZ3dvffM5P+DaVKcnLNnH7OzdxcgIiIiIiIiIiIiIiIiWus2ARgG8BrAMgAT+Vh2tVwFsBHK7QDwQcFGMxWN965GtXt+yhvfuDGv9UgYVrBxTJPGFSj0RiT5VPPhmsNOAM9EbbNQaEkkaRNPxS5R228oJA/T1Bjt9alPMPX61CdYUJH7iC8AngMYBXC0WQmmxpQ4vgIYBLCuygRTYyoYrwB0VZVgakxFYxHAySoSTI0JrG8LgG4AFwA8APDHE8v+7USrEoyFKam+fQCeeOL9Kno6YgPyuQbgn+cOO/jCzAbkd90T9ywCsQFhxkVce88QhA0I0+W5MB8JCcQGhHsoYo+EBGEDwl0UsSdDgrAB4bo9SxW5sQHh2kRs+2wlNzYgXHsZD3zYgHA9ZUxF2YBwvAi3uL5HIvatkCBsQJi9nhuxQyGB2IAwEyLu58A4bECAG564pxGIDci/EiqXo2e4HF19ffs9px07fgLYUyAuG5Bxl9vjppp2tvPXE8tehI+joLXWAFPiQ/n+KhJMjalgzBQ97WQlmBpT4rBTzTNVJ5gaEziW3NrOpLvDPdysBFNjtNenPsHU61OfYOr1qU8w9frUJ5h6feoTTL0+uaa9FeloF7XVoNCiSPIA0tHjWThTZ14kWcr6hhIDorY5KHRfJHkT6RgVtd2FQpdFku+Qjo+itiEoZB8u1xuSrLuf3MXuoNj4tq7dUOqlSPYx4jchapqCYuc9e8sxxKvPM/+37/eqtcGtdTcm/B1AJ+KzHcAPUcsCgPVQ7pRnr5nS+pGjjI9PTXuO5sKvkjbLnVWa0BnJnj/tyf82IrLZ8wEnO74pvyb0eU47K6+P2qMiKh2e68HKsC8q90LXVHN8lVw/AdiGSHW4Tz6ajK8QjrhvJfS639BUrc39rwF3h5v1ocHZmDd+4+loLKNIjaPuzvnRnXay9LvD2SgfCzHNdvKyc+hzAF6IZYtWj7qbpQ3GMM8vi/1F2CUA9wC8dV8LqTVhY9fc/5pzq5pDmtd2iIiIiIiIiIiIiIiIiLCm/AfQmB4NnQIUlQAAAABJRU5ErkJggg==" 
+         alt="external-mug-food-royyan-wijaya-detailed-outline-royyan-wijaya">
+    <span class="btn-text">Otros</span>
+  </button>
+
+  <button type="button" (click)="buscarProductoCategoria('Promoción'); mostrarProductos(); closeMenuIfMobile()" >
+    <img src="data:image/png;base64,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" 
+         alt="discount--v1">
+    <span class="btn-text">Promociones</span>
+  </button>
+
+  <span *ngIf="logeado" class="admin_title" [class.show]="isVisible"> Para Administrador </span>
+
+  <button *ngIf="logeado" type="button" class="addProduct" (click)="addProductForm(); closeMenuIfMobile()">
+    <svg fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+    </svg>
+    <span class="btn-text">Añadir Producto</span>
+  </button>
+
+  <button *ngIf="logeado" type="button" (click)="mostrarPedidos(); closeMenuIfMobile()">
+    <svg fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h6m-6 4h6m-6-8h6M4 6h16v12H4z"/>
+    </svg>
+    <span class="btn-text">Pedidos</span>
+  </button>
+
+  <button *ngIf="logeado" type="button" (click)="mostrarConfiguracion(); closeMenuIfMobile()">
+    <svg data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+    </svg>
+    <span class="btn-text">Configuracion</span>
+  </button>
+
+  <button type="button" class="logIn" (click)="logIn(); closeMenuIfMobile()">
+    <svg fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" 
+            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/>
+    </svg>
+    <span class="btn-text">Acceder como Administrador</span>
+  </button>
+
+</div>

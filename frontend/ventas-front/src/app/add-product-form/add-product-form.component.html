@@ -1,0 +1,70 @@
+<div class="overlay">  
+  <div class="add-form-container" @fadeInOut>
+    <!-- Boton Cerrar -->
+    <button type="button" class="cerrar_btn" (click)="cerrar()"> ✕ </button>
+
+    <h2>Añadir Producto</h2>
+
+    <form [formGroup]="addProduct_form()" class="form-add-product" >
+      <!-- Input 1 -->
+      <label for="nombre" >
+        <input type="text" class="form-control" placeholder="Nombre del Producto" formControlName="nombre" />
+      </label>
+      <!-- Input 2 -->
+      <label for="descripcion">
+        <textarea id="descripcion" class="form-control" placeholder="Descripcion" formControlName="descripcion"></textarea>
+      </label>
+      <!-- Input 3 -->
+      <label for="precio">
+        <input type="number" class="form-control" placeholder="Precio" formControlName="precio"/>
+      </label>
+      <!-- Input 4 -->
+      <label for="stock">
+        <input type="number" class="form-control" placeholder="Stock" formControlName="stock"/>
+      </label>
+      <!-- Input 5 -->
+      <div class="custom-select" (click)="toggleSelect()" [class.open]="isOpen">
+        <div class="selected" [class.placeholder]="!selectedCategory">
+          {{ selectedCategory || "Seleccionar Categoría" }}
+        </div>
+
+        <svg data-slot="icon" fill="none" stroke-width="1.5" 
+             stroke="currentColor" viewBox="0 0 24 24" 
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+        </svg>
+
+        <div class="options" [class.open]="isOpen">
+          <div 
+            class="option" 
+            *ngFor="let cat of categorias"
+            (click)="selectCategory(cat); toggleSelect()">
+            {{ cat }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Campo Imagen -->
+      <div 
+        class="dropzone" 
+        [class.dragover]="isDragOver"
+        (drop)="onDrop($event)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+      >
+        <p *ngIf="!selectedImage">Arrastra una imagen aquí o haz clic para seleccionar</p>
+        <p *ngIf="selectedImage"><strong>{{ selectedImage.name }}</strong></p>
+
+        <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+      </div>
+      <!-- Boton Enviar -->
+      <div class="btn_enviar">
+        <button type="submit"
+                (click)="addProduct()"
+                [ngClass]="{ 'disabled-btn': addProduct_form().invalid }">
+          Añadir Producto
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

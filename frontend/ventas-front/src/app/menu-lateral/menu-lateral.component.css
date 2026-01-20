@@ -1,0 +1,238 @@
+.menu_lateral {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 90vh;
+  width: 3.5vw;
+  background-color: #252525;
+  color: white;
+  overflow: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* alineamos a la izquierda */
+  justify-content: start;
+  padding-top: 2vh;
+  padding-left: 0.5vw;
+  gap: 0.8vw;
+  transition: width 0.3s ease-in-out;
+  z-index: 6;
+  margin-top: 9vh;
+  border-top: solid 0.5px #fff;
+}
+
+.menu_lateral.expanded {
+  width: 17.5vw;
+}
+
+.fondo_btn_menu.expanded {
+  width: 18vw;
+}
+
+.menu_lateral button {
+  height: 3vw;
+  width: 3vw;
+  background: #252525;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  padding-right: 9px;
+  transition: width 0.3s ease, border-radius 0.3s ease;
+  overflow: hidden;
+  transition: 0.2s;
+}
+
+.menu_lateral button:hover {
+  background-color: #444444;
+}
+
+.menu_lateral button:active {
+  transform: scale(0.9);
+  background-color: #707070;
+}
+
+.menu_lateral.expanded button {
+  width: 17vw;
+  border-radius: 20px;
+}
+
+.menu_lateral button svg {
+  min-width: 24px;
+  height: 24px;
+}
+
+.menu_lateral button img {
+  min-width: 28px;
+  height: 28px;
+  filter: invert(1);
+}
+
+.menu_lateral button .btn-text {
+  margin-left: 10px;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  font-size: 14px;
+}
+
+.menu_lateral.expanded button .btn-text {
+  opacity: 1;
+}
+
+.menu_lateral .logIn{
+  margin-top: auto;
+  margin-bottom: 3vh;
+  background-color: #028f21;
+  transition: 0.5s;
+}
+
+.menu_lateral .logIn span {
+  font-size: 13px;
+}
+
+.menu_lateral .logIn:hover {
+  background-color: #01d124;
+}
+
+.menu_toggle_btn {
+  position: fixed;
+  top: 2vh;
+  left: 4vh;
+  transform: translateX(-50%);
+  width: 5vh;
+  height: 5vh;
+  background-color: #252525;
+  border: solid 0.1vh white;
+  border-radius: 0.5vh;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.menu_toggle_btn:hover {
+  background-color: #444455;
+}
+
+.menu_toggle_btn:active {
+  transform: translateX(-50%) scale(0.9);
+}
+
+.fondo_btn_menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 9vh;
+  width: 4vw;
+  background-color: #252525;
+  z-index: 4;
+  transition: width 0.3s ease-in-out;
+}
+
+.admin_title {
+  width: 40px;
+  height: 4px;
+  background-color: #01d124;
+  border-radius: 2px;
+  margin: 8px auto;
+  opacity: 1;
+  transition: all 0.3s ease;
+  font-size: 0;
+  margin-right: 10px;
+}
+
+.admin_title.show {
+  width: 90%;
+  height: auto;
+  padding: 6px 0;
+  background-color: #028f21;
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .menu_lateral {
+    width: 0; /* menú pequeño cuando está cerrado */
+    padding-left: 0;
+  }
+
+  .menu_lateral.expanded {
+    width: 60vw; /* menú ocupando más espacio */
+  }
+
+  .menu_lateral button {
+    width: 12vw;
+    height: 6vh;
+    margin-left: 5px;
+  }
+
+  .menu_lateral.expanded button {
+    width: 10vw;
+  }
+
+  .menu_toggle_btn {
+    width: 3vh;
+    height: 3vh;
+    margin-left: 10px;
+  }
+
+  .menu_toggle_btn svg {
+    width: 3vh;
+    height: 3vh;
+  }
+
+  .fondo_btn_menu {
+    z-index: 7;
+    width: 0;
+  }
+  .fondo_btn_menu.expanded {
+    width: 0;
+  }
+
+  .menu_lateral .logIn span {
+    font-size: 14px;
+  }
+}
+
+/* 📱 CELULARES MUY PEQUEÑOS (360 - 420px) */
+@media (max-width: 480px) {
+  .menu_lateral {
+    width: 0;
+    padding-left: 0;
+  }
+
+  .menu_lateral.expanded {
+    width: 68vw;
+  }
+
+  .menu_lateral button {
+    width: 10vw;
+  }
+
+  .menu_lateral.expanded button {
+    width: 65vw;
+  }
+
+  .menu_toggle_btn {
+    left: 2.2vh;
+    width: 5vh;
+    height: 5vh;
+  }
+
+  .fondo_btn_menu.hide {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+}

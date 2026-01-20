@@ -1,0 +1,193 @@
+.sheet-container {
+  border: 1px solid #ccc;
+  background: white;
+  width: 91.4vw;
+  height: 82vh;
+  margin-left: 13vh;
+  margin-bottom: 10vh;
+}
+
+/* ÚNICO contenedor que scrollea */
+.sheet-scroll {
+  height: 100%;
+  overflow: auto;   /* X + Y */
+  scrollbar-width: none;
+}
+
+/* Header */
+.sheet-header {
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  display: grid;
+  background: #f1f3f4;
+  font-weight: bold;
+}
+
+/* Body */
+.sheet-body {
+  display: block;
+}
+
+/* Grilla compartida */
+.sheet-header,
+.sheet-row {
+  grid-template-columns:
+    150px
+    220px
+    150px
+    80px
+    120px
+    120px
+    140px
+    120px
+    70px;
+}
+
+/* Filas */
+.sheet-row {
+  display: grid;
+}
+
+/* Celdas */
+.sheet-header div,
+.sheet-row div {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hover */
+.sheet-row:hover {
+  background: #e6e7eb;
+}
+
+/* Estados */
+.estado {
+  text-align: center;
+  border-radius: 4px;
+  font-size: 15px;
+  padding: 4px;
+}
+.estado.entregado { background:#d4edda; color:#155724; }
+.estado.pendiente { background:#fff3cd; color:#856404; }
+.estado.cancelado { background:#f8d7da; color:#721c24; }
+
+/* Acciones */
+.acciones {
+  display:flex;
+  justify-content:center;
+}
+
+.mes-separador {
+  position: sticky;
+  top: 38px;   
+  grid-column: 1 / -1;
+  background: #e0e3ff;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-top: 2px solid #564afa;
+  border-bottom: 1px solid #ccc;
+  text-transform: capitalize;
+}
+
+.floating-menu {
+  position: absolute;   /* 🔥 NO fixed */
+  background: #1e1e1e;
+  border-radius: 10px;
+  min-width: 160px;
+  padding: 6px;
+  z-index: 1000;
+  box-shadow: 0 12px 30px rgba(0,0,0,.5);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: menuPop 0.15s ease-out;
+  transform-origin: top right;
+}
+
+.floating-menu button {
+  background: transparent;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.15s;
+}
+
+/* Pendiente */
+.floating-menu button:nth-child(1) {
+  color: #ffe08a;
+}
+
+/* Entregado */
+.floating-menu button:nth-child(2) {
+  color: #7dffb3;
+}
+
+/* Cancelado */
+.floating-menu button:nth-child(3) {
+  color: #ff8a8a;
+}
+
+.floating-menu button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.edit-btn {
+  width: 4vh;
+  height: 4vh;
+  background-color: #564afa;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.edit-btn:hover {
+  background-color: #796df8;
+  transform: scale(1.1);
+}
+
+.edit-btn img {
+  filter: brightness(0) invert(1);
+  width: 2.5vh;
+  height: 2.5vh;
+}
+
+@keyframes menuPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+@media (max-width: 720px) {
+  .sheet-container {
+    margin-left: 0;
+    margin-top: 0vh;
+    margin-bottom: 10vh;
+    width: 325vw;
+    overflow-x: auto;
+  }
+
+  .sheet-scroll {
+    overflow-x: auto;
+  }
+  
+}

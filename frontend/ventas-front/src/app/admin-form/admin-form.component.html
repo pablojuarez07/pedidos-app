@@ -1,0 +1,72 @@
+<div class="overlay">  
+  <div class="admin-form-container" @fadeInOut>
+    <!-- Boton Cerrar -->
+    <button type="button" class="cerrar_btn" (click)="cerrar()"> ✕ </button>
+
+    <h2>Acceder como Administrador</h2>
+
+    <form [formGroup]="admin_form()" class="form_admin">
+      <!-- Input 1 -->
+      <div class="field">
+        <input type="text" class="form-control" placeholder="E-mail" formControlName="email" />
+      </div>
+      <!-- Input 2 -->
+      <div class="field password-div">
+        <input [type]="showPassword ? 'text' : 'password'"
+               class="form-control password-input" 
+               placeholder="Password"
+               formControlName="password"/>
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePassword()">
+
+          <!-- OJO ABIERTO -->
+          <svg *ngIf="!showPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639
+              C3.423 7.51 7.36 4.5 12 4.5
+              c4.638 0 8.573 3.007 9.963 7.178
+              .07.207.07.431 0 .639
+              C20.577 16.49 16.64 19.5 12 19.5
+              c-4.638 0-8.573-3.007-9.964-7.178z"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+          </svg>
+
+          <!-- OJO CERRADO -->
+          <svg *ngIf="showPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.98 8.223A10.477 10.477 0 0 0 2.036 12.322
+              a1.012 1.012 0 0 0 0 .639
+              C3.423 16.49 7.36 19.5 12 19.5
+              c1.777 0 3.454-.46 4.93-1.264"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6.228 6.228A10.45 10.45 0 0 1 12 4.5
+              c4.638 0 8.573 3.007 9.963 7.178"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 3l18 18"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Boton Enviar -->
+      <div class="btn_enviar">
+        <button type="submit"
+                (click)="login()"
+                [ngClass]="{ 'disabled-btn': admin_form().invalid }">
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

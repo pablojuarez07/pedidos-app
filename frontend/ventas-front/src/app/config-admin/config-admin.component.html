@@ -1,0 +1,45 @@
+<div class="config-container">
+
+  <!-- CAMBIAR CONTRASEÑA -->
+  <form class="bloque" [formGroup]="passwordForm" (ngSubmit)="cambiarPassword()">
+    <h3>Cambiar contraseña</h3>
+
+    <input type="password" placeholder="Contraseña actual" formControlName="oldPassword">
+
+    <input type="password" placeholder="Nueva contraseña" formControlName="newPassword">
+
+    <button type="submit" [disabled]="passwordForm.invalid">
+      Guardar contraseña
+    </button>
+
+    <p class="msg" *ngIf="passwordMsg">{{ passwordMsg }}</p>
+  </form>
+
+
+  <!-- CAMBIAR EMAIL -->
+  <form class="bloque" [formGroup]="emailForm" (ngSubmit)="cambiarEmail()">
+    <h3>Cambiar email</h3>
+
+    <input type="email" placeholder="Nuevo email" formControlName="email">
+
+    <button type="submit" [disabled]="emailForm.invalid">
+      Guardar email
+    </button>
+
+    <p class="msg" *ngIf="emailMsg">{{ emailMsg }}</p>
+  </form>
+
+  <!-- FECHA DE CIERRE -->
+  <form class="bloque" [formGroup]="cierreForm" (ngSubmit)="cambiarFechaCierre()">
+    <h3>Fecha de cierre de campaña</h3>
+
+    <input type="date" formControlName="fechaCierre">
+
+    <button type="submit" [disabled]="cierreForm.invalid">
+      Guardar fecha
+    </button>
+
+    <p class="msg" *ngIf="cierreMsg">{{ cierreMsg }}</p>
+  </form>
+  
+</div>

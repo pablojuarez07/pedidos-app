@@ -1,0 +1,153 @@
+.card {
+  padding: 12px;
+  border-radius: 0.5vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: default;
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+}
+
+.card.visible {
+  animation: fadeUp 0.4s ease-out both;
+}
+
+.product_descripction {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.img-fixed {
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+  border-radius: 0.5vh;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.img-fixed:hover {
+  transform: scale(1.03);
+}
+
+/* Modal pantalla completa */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3);  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+  z-index: 9999;
+}
+
+/* Imagen grande */
+.modal-img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 5px;
+}
+
+.product_name {
+  margin-bottom: 0;
+}
+
+.precio {
+  font-size: 4vh;
+}
+
+/* Contenedor para precio + botón */
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
+}
+
+/* Botón pedir */
+.pedido-btn {
+  background-color: #2927be;
+  color: white;
+  border: none;
+  padding: 0.8vh 1.5vh;
+  border-radius: 0.5vh;
+  cursor: pointer;
+  font-size: 2vh;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.pedido-btn:hover {
+  background-color: #6544db;
+}
+
+.pedido-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .card {
+    width: 95%;
+    min-height: 35vh;
+    padding: 5px;
+  }
+
+  .img-fixed {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .product_name {
+    font-size: 14px;
+  }
+
+  .product_descripction {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .precio {
+    font-size: 16px;
+  }
+
+  .pedido-btn {
+    width: 80px;
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .bottom-row {
+    flex-direction: column;
+    align-items: first baseline;
+    gap: 5px;
+  }
+
+  .stock_product {
+    margin: 0;
+  }
+}

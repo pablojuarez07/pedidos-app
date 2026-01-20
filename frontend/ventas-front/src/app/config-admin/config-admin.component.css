@@ -1,0 +1,136 @@
+/* CONTENEDOR GENERAL */
+.config-container {
+  min-width: 68vw;
+  height: 60vh;
+  margin: 40px auto;
+  padding: 20px;
+
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+
+  margin-left: 15vw;
+
+}
+
+/* BLOQUES / CARDS */
+.bloque {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+
+  width: 80%;
+  height: 60%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bloque:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.12),
+    0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* TITULOS */
+.bloque h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937; /* gris oscuro */
+}
+
+/* INPUTS */
+.bloque input {
+  width: 80%;
+  padding: 12px 14px;
+
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+
+  font-size: 0.95rem;
+  color: #111827;
+  background: #f9fafb;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s;
+}
+
+.bloque input::placeholder {
+  color: #9ca3af;
+}
+
+/* FOCUS */
+.bloque input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* BOTONES */
+.bloque button {
+  margin-top: 8px;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: none;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+}
+
+/* HOVER */
+.bloque button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+/* DISABLED */
+.bloque button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.msg {
+  font-size: 0.85rem;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.msg:empty {
+  display: none;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .config-container {
+    min-width: 50vw;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 18vh;
+    margin-left: 13vw;
+    margin-bottom: 35vh;
+  }
+
+  .bloque {
+    padding: 20px;
+    width: 60vw;
+  }
+}
