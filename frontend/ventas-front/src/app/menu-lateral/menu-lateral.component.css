@@ -203,6 +203,10 @@
   .menu_lateral .logIn span {
     font-size: 14px;
   }
+
+  .menu_lateral .logIn{
+    margin-bottom: 6vh;
+  }
 }
 
 /* 📱 CELULARES MUY PEQUEÑOS (360 - 420px) */
