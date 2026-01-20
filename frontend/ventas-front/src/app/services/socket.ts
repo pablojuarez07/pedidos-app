@@ -10,7 +10,7 @@ export class SocketService {
 
   connect() {
     // Conectamos al backend (cambiá el puerto si tu backend usa otro)
-    this.socket = io('http://localhost:3000', {
+    this.socket = io('https://pedidos-app-emyj.onrender.com', {
       transports: ['websocket'], // asegura conexión estable
     });
 

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://pedidos-app-emyj.onrender.com";
 
 async function request(method: string, endpoint: string, data: any = null): Promise<any> {
   const options: RequestInit = {
