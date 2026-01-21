@@ -4,7 +4,7 @@
   top: 0;
   height: 90vh;
   width: 3.5vw;
-  background-color: #252525;
+  background-color: #b20f3b;
   color: white;
   overflow: hidden;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -32,7 +32,7 @@
 .menu_lateral button {
   height: 3vw;
   width: 3vw;
-  background: #252525;
+  background: #b20f3b;
   border: none;
   color: white;
   font-size: 18px;
@@ -47,12 +47,12 @@
 }
 
 .menu_lateral button:hover {
-  background-color: #444444;
+  background-color: #cf1244;
 }
 
 .menu_lateral button:active {
   transform: scale(0.9);
-  background-color: #707070;
+  background-color: #f53468;
 }
 
 .menu_lateral.expanded button {
@@ -105,7 +105,7 @@
   transform: translateX(-50%);
   width: 5vh;
   height: 5vh;
-  background-color: #252525;
+  background-color: #b20f3b;
   border: solid 0.1vh white;
   border-radius: 0.5vh;
   color: white;
@@ -118,7 +118,7 @@
 }
 
 .menu_toggle_btn:hover {
-  background-color: #444455;
+  background-color: #db1248;
 }
 
 .menu_toggle_btn:active {
@@ -131,7 +131,7 @@
   top: 0;
   height: 9vh;
   width: 4vw;
-  background-color: #252525;
+  background-color: #b20f3b;
   z-index: 4;
   transition: width 0.3s ease-in-out;
 }

@@ -4,7 +4,7 @@
   padding: 0;
   border-radius: 50%;
   border: 1px solid white;
-  background: #222;
+  background: #960d31;
   color: white;
   cursor: pointer;
 
@@ -15,7 +15,7 @@
 }
 
 .btn-pedidos:hover {
-  background-color: #3d3d3d;
+  background-color: #cc1747;
 }
 
 .btn-pedidos svg {
@@ -41,7 +41,7 @@
   top: 0;
   width: 30vw;
   height: 93vh;
-  background: #252525;
+  background: #960d31;
   padding: 16px;
   z-index: 10;
   box-shadow: -4px 0 10px rgba(0,0,0,.2);
@@ -141,7 +141,7 @@
   height: 5vh;
   border-radius: 10px;
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.075);
   transition: 0.3s;
 }
 
