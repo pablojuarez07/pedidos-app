@@ -4,7 +4,7 @@
   height: 9vh;
   top: 0;
   right: 0;
-  background-color: #252525;
+  background-color: #b20f3b;
   z-index: 5;
   transition: transform 0.3s ease, opacity 0.3s ease;
   will-change: transform;
@@ -17,13 +17,32 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espacio entre icono y texto */
   position: absolute;
-  margin-left: 50px;
+  margin-left: 10px;
   margin-top: 5px;
-  text-align: center;
-  line-height: 1;
-  z-index: 8;
   height: 100%;
+  z-index: 8;
+}
+
+.logo-icon img {
+  width: 50px;    /* ajusta tamaño del icono */
+  height: 50px;
+  border-radius: 50%; /* opcional si querés que sea circular */
+  object-fit: cover;
+}
+
+.logo-top, .logo-bottom {
+  line-height: 1; /* reduce espacio entre líneas */
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 /* "Productos" */
@@ -118,19 +137,30 @@
   }
 
   .logo {
-    margin-left: 60px;
+    margin-left: 18vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0px;
+  }
+
+  .logo-icon {
+    display: none;
+  }
+
+  .logo-text {
+    margin-bottom: 0;
   }
 
   .logo-bottom {
-    font-size: 30px;
+    font-size: 25px;
+    line-height: 0.90;
   }
 
   .logo-top {
     font-size: 10px;
+    letter-spacing: 2px;
   }
 
   .buscador_container {
