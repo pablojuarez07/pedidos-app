@@ -143,13 +143,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0px;
+    gap: 4px;
     height: 6.5vh;
   }
 
+  .logo-icon {
+    height: 5vh;
+
+  }
+
   .logo-icon img {
-    width: 3.5vh;
-    height: 3.5vh;
+    width: 6vh;
+    height: 6vh;
   }
 
   .logo-text {
