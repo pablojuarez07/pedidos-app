@@ -158,8 +158,6 @@ router.get("/:clientId", async (req, res) => {
     const pedidos = rows.map(r => ({
       ...r,
       imagen_url: r.imagen
-        ? `${BASE_URL}/uploads/${r.imagen}`
-        : null
     }));
 
     res.json(pedidos);
