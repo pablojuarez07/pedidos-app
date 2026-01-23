@@ -26,23 +26,27 @@
         <div class="categoria-line"></div>
       </div>
 
+      <div *ngIf="cargandoProductos" class="loader">
+        <div class="spinner"></div>
+        Cargando productos...
+      </div>
+
       <!-- Grilla de productos -->
-      <div  *ngIf="productos.length > 0; else sinProductos" class="grid_productos">
+      <div  *ngIf="!cargandoProductos && productosVisibles.length > 0" class="grid_productos">
         <app-product-card 
-          *ngFor="let p of productos; let i = index" 
+          *ngFor="let p of productosVisibles; let i = index" 
           [producto]="p"
+          [logeado]="logeado"
           [delay]="i * 80"
           (selectProduct)="selectProduct = $event; abrirPedirProducto()">
         </app-product-card>
       </div>
 
-      <ng-template #sinProductos>
-        <div class="no-productos">
-          <span class="icon">📦</span>
-          <h2>No hay productos disponibles</h2>
-          <p>Probá con otra categoría o volvé más tarde.</p>
-        </div>
-      </ng-template>
+      <div *ngIf="!cargandoProductos && productosVisibles.length === 0" class="no-productos">
+        <span class="icon">📦</span>
+        <h2>No hay productos disponibles</h2>
+        <p>Probá con otra categoría o volvé más tarde.</p>
+      </div>
     </div>
 
     <div *ngIf="vistaActual === 'pedidos'" class="planilla-pedidos">

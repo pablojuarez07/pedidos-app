@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../database/db"); 
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+const isProd = process.env.NODE_ENV === "production";
+const back_url = process.env.BACK_URL;
 
 // POST para agregar pedido
 router.post("/add", async (req, res) => {
@@ -157,7 +158,9 @@ router.get("/:clientId", async (req, res) => {
 
     const pedidos = rows.map(r => ({
       ...r,
-      imagen_url: r.imagen
+      imagen_url: isProd
+        ? r.imagen
+        : `${back_url}/uploads/${r.imagen}`
     }));
 
     res.json(pedidos);
@@ -172,7 +175,7 @@ router.post("/:id/estado", async (req, res) => {
   const { estado } = req.body;
   const { id } = req.params;
 
-  if (!['pendiente','cancelado'].includes(estado)) {
+  if (!['pendiente','cancelado', 'entregado'].includes(estado)) {
     return res.status(400).json({ error: "Estado inválido" });
   }
 
@@ -187,13 +190,10 @@ router.post("/:id/estado", async (req, res) => {
       [id]
     );
 
-    const pedido = resultPedido.rows[0]
-
+    const pedido = resultPedido.rows[0];
     if (!pedido) throw "Pedido no existe";
-    if (pedido.estado === "entregado") {
-      await conn.query("ROLLBACK");
-      return res.status(400).json({ error: "Pedido ya entregado" });
-    }
+
+    const estadoActual = pedido.estado;
 
     // 2️⃣ Traer productos del pedido
     const resultItems = await conn.query(
@@ -208,13 +208,11 @@ router.post("/:id/estado", async (req, res) => {
     // Para emitir sockets después del commit
     const stocksActualizados = [];
 
-    // 3️⃣ Cancelar → devolver stock
-    if (pedido.estado === "pendiente" && estado === "cancelado") {
+    // Función para devolver stock
+    const devolverStock = async () => {
       for (const item of items) {
         await conn.query(
-          `UPDATE productos 
-           SET stock = stock + $1
-           WHERE id = $2`,
+          `UPDATE productos SET stock = stock + $1 WHERE id = $2`,
           [item.cantidad, item.producto_id]
         );
 
@@ -223,18 +221,15 @@ router.post("/:id/estado", async (req, res) => {
           [item.producto_id]
         );
 
-        const p = resultStock.rows[0];
-
         stocksActualizados.push({
           producto_id: item.producto_id,
-          stock: p.stock
+          stock: resultStock.rows[0].stock
         });
       }
-    }
+    };
 
-    // 4️⃣ Reactivar → validar y descontar stock
-    if (pedido.estado === "cancelado" && estado === "pendiente") {
-      // validar
+    // Función para descontar stock (valida disponibilidad)
+    const descontarStock = async () => {
       for (const item of items) {
         const resultProd = await conn.query(
           `SELECT stock FROM productos WHERE id = $1 FOR UPDATE`,
@@ -242,21 +237,15 @@ router.post("/:id/estado", async (req, res) => {
         );
 
         const prod = resultProd.rows[0];
-
         if (prod.stock < item.cantidad) {
           await conn.query("ROLLBACK");
-          return res.status(400).json({
-            error: "No hay stock suficiente para reactivar el pedido"
-          });
+          return res.status(400).json({ error: "No hay stock suficiente" });
         }
       }
 
-      // descontar
       for (const item of items) {
         await conn.query(
-          `UPDATE productos 
-           SET stock = stock - $1
-           WHERE id = $2`,
+          `UPDATE productos SET stock = stock - $1 WHERE id = $2`,
           [item.cantidad, item.producto_id]
         );
 
@@ -265,16 +254,24 @@ router.post("/:id/estado", async (req, res) => {
           [item.producto_id]
         );
 
-        const p = resultStock.rows[0];
-
         stocksActualizados.push({
           producto_id: item.producto_id,
-          stock: p.stock
+          stock: resultStock.rows[0].stock
         });
       }
-    }
+    };
 
-    // 5️⃣ Cambiar estado
+    // 3️⃣ Lógica de transición de estados
+    if ((estadoActual === "pendiente" || estadoActual === "entregado") && estado === "cancelado") {
+      // Devolver stock
+      await devolverStock();
+    } else if (estadoActual === "cancelado" && (estado === "pendiente" || estado === "entregado")) {
+      // Descontar stock
+      await descontarStock();
+    }
+    // De pendiente → entregado o entregado → pendiente: no tocar stock
+
+    // 4️⃣ Cambiar estado del pedido
     await conn.query(
       "UPDATE pedidos SET estado = $1 WHERE id = $2",
       [estado, id]
@@ -282,7 +279,7 @@ router.post("/:id/estado", async (req, res) => {
 
     await conn.query("COMMIT");
 
-    // 6️⃣ Emitir sockets (DESPUÉS del commit)
+    // 5️⃣ Emitir sockets (DESPUÉS del commit)
     const io = req.app.get("socketio");
     for (const s of stocksActualizados) {
       io.emit("nuevo_stock", s);
@@ -298,7 +295,6 @@ router.post("/:id/estado", async (req, res) => {
     conn.release();
   }
 });
-
 
 
 module.exports = router;
