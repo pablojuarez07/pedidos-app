@@ -17,11 +17,76 @@
       Pedir producto
     </button>
   </div>
+
+  <button class="editar-btn" *ngIf="logeado" (click)="abrirFormulario()">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAADOElEQVR4nO2dva8NQRiHfwTRSCQSQaG5FIjClaBTX67LyXsk6DRqCtEodDpxEwVaIrcSUVD4I3yLRiMSH3FFd92zJ8gkc+RkMvu9s/Pa/T3JVGdnMzPPeefj3WQXIIQQQgghXjYD2ANgJ4CN/ktIaDYBuArgDYA/U2UFwFMA88FbQP5xFMAXR4SvPLHRQwIyBDAqIGNSXtloIg2yF8B5ABcAJCVkTMpSk43pO0MAqxUkuOVw7I50ASk5PWWVu7E704XISBqSYcqH2B36n5EGI2NSzP3Wxu5YVyJjBcD9mkLMOrQmdue6IOMXgDn7+zVOWXGnKfOvXnCuu1JRyO0W+9LJyFgFcCLl+rKR8hvAoZb71CkZIwAnc+qVkfKgpb50VsagYP0iUl4zdVJ9zRgDOINyZK0p7wHsKHm/XjJMOfQl9reypEXKvgBt790JPKko5Z7nXqcDtL+X6ZCkpJRj9vDonl9mAvald+mQMYBzBe4755Fh6p5toU+9y02Nc6RQRoREYZqU43ZaoowIWVtXCmUoSKFPpKSdXyijxYdL07uvUUPb5N4gAR4uZUUNIyMDylCEUIYehDL0IJShB6EMPQhl6EEoQw9CGXoQytCDUIYehDL0IJShB6EMPQhl6EEoQw9CGXoQytCDUIYehDL0IJShB6EMPVCGIihDEZShCMpQBGUogjIUQRmKoAxFUIYiKEMRlKEIylAEZSiCMhRBGYqgDEVQhiIoQxGUoQjKUARlKGK3571QoUrCd4fkc4ORoYd1AD5Thh4WnIH7CeA6p6l4PHQG707Nl9IzMmqwxfMquyMZ11NGYC56Xp2dBWUE5rkziJdzrqeMgOz3LLzbc+pQRkBuOgP5uECdvIWeMiqyHsA3ZzCLflMjbUvMrW0NBs5gfgewIafOQQCLAJYZGc3zyBnQWynXbbML/Tse+sKx1ZPVNf/62anpbGDXlLyXFZuEJGXU5FLK4C7bSHHXFl/5ahOSu+o2hgAvaqRAntmvypgoIg0wW0HEW7vdNVMdaZjFghJ+2CSj2VmRgGQ99xjZ3dcpTknt8ckj4qVNMnJKioD52thHGylm+joQoxGEEEIIIYSgNn8BqpiWi5SKB24AAAAASUVORK5CYII=" alt="pencil--v1">
+  </button>
 </div>
 
 <!-- Modal para ver la imagen grande -->
 <div class="modal" *ngIf="mostrarImagen" (click)="cerrarImg()">
   <img [src]="producto.imagen_url" class="modal-img">
 </div>
+
+<!-- Formulario de edicion -->
+<div class="modal" *ngIf="mostrarFormulario">
+  <form class="edit-form" [formGroup]="edit_form()" (ngSubmit)="guardarCambios()">
+    <h2>Editar producto</h2>
+
+    <label class="label-input">
+      Nombre:
+      <input type="text" formControlName="nombre" placeholder="Nombre" />
+    </label>
+    <label class="label-input">
+      Precio:
+      <input type="number" formControlName="precio" placeholder="Precio" />
+    </label>
+    <label class="label-input">
+      Stock:
+      <input type="number" formControlName="stock" placeholder="Stock" />
+    </label>
+    <label class="label-input">
+      Categoria:
+    </label>
+
+    <div class="custom-select edit-select"
+     (click)="toggleEditSelect();  $event.stopPropagation()"
+     [class.open]="isEditOpen">
+
+      <div class="selected"
+          [class.placeholder]="!editSelectedCategory">
+        {{ editSelectedCategory || "Seleccionar Categoría" }}
+      </div>
+
+      <svg fill="none" stroke-width="1.5"
+          stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+      </svg>
+
+      <div class="options" [class.open]="isEditOpen">
+        <div class="option"
+            *ngFor="let cat of categorias"
+            (click)="selectEditCategory(cat); $event.stopPropagation()">
+          {{ cat }}
+        </div>
+      </div>
+    </div>
+
+    <label class="label-input">
+      Descripcion:
+      <textarea
+        formControlName="descripcion"
+        placeholder="Descripción">
+      </textarea>
+    </label>
+
+    <div class="form-buttons">
+      <button type="submit">Guardar</button>
+      <button type="button" (click)="cerrarFormulario()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
 
 <app-product-info [producto]="producto" />

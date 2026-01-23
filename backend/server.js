@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const productosRoutes = require("./routes/productos_routes");
 const pedidosRoutes =  require("./routes/pedidos_routes");
-const uploadRoutes = require("./routes/uploads_routes");
 const userRoutes = require("./routes/user_routes");
 
 const http = require('http');
@@ -36,7 +35,6 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/productos", productosRoutes); // endpoints para productos
 app.use("/pedidos", pedidosRoutes);
-app.use("/upload", uploadRoutes);       // endpoints para imagenes
 app.use('/uploads', express.static('uploads')); // imagenes
 
 // Guardamos io globalmente para usarlo en las rutas
