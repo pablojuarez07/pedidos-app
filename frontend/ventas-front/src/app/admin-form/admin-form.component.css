@@ -31,7 +31,7 @@
 .admin-form-container h2 {
   text-align: center;
   margin-bottom: 10px;
-  font-size: 22px;
+  font-size: 4vh;
   color: #334;
 }
 
@@ -42,6 +42,10 @@
   border: 1px solid #aaa;
   font-size: 15px;
   outline: none;
+}
+
+.form-control::placeholder {
+  font-size: 2vh;
 }
 
 .form-control:focus {
@@ -58,9 +62,14 @@
 
 .field {
   width: 100%;
-  max-width: 320px;
+  max-width: 20vw;
+  height: 4vh;
   display: flex;
   justify-content: center;
+}
+
+.field input {
+  font-size: 2vh;
 }
 
 .password-div {
@@ -124,9 +133,10 @@ button:hover {
 }
 
 .toggle-password svg {
-  width: 20px;
-  height: 20px;
+  width: 3vh;
+  height: 3vh;
   pointer-events: none;
+  margin-right: 1vh;
 }
 
 /* Botón cerrar arriba a la derecha */
@@ -137,11 +147,11 @@ button:hover {
   background: #c44;
   color: white;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 3vh;
+  height: 3vh;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 2vh;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -159,6 +169,11 @@ button:hover {
   justify-content: center;
 }
 
+.btn_enviar button {
+  width: 20vw;
+  font-size: 2vh;
+}
+
 @media (max-width: 768px) {
   .admin-form-container {
     width: 60vw;
@@ -174,11 +189,18 @@ button:hover {
     padding: 10px;
   }
 
+  .field {
+    max-width: 70vw;
+  }
+
   button {
     width: 100%;
     font-size: 15px;
   }
-}
+
+  .btn_enviar button {
+    width: 70vw;
+  }
 
 /* 📱 Celulares medianos (480px o menos) */
 @media (max-width: 480px) {

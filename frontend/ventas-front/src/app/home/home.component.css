@@ -166,6 +166,7 @@
   flex-direction: column;
   gap: 1.2rem;
   transition: transform .3s ease, box-shadow .3s ease;
+  margin-bottom: 10vh;
 }
 
 .contact-card:hover {
@@ -247,6 +248,7 @@
 
 .cierre-campaña p {
   color: white;
+  font-size: 2vh;
 }
 
 .loader {

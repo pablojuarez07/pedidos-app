@@ -61,10 +61,19 @@
 
 .product_name {
   margin-bottom: 0;
+  font-size: 3vh;
 }
 
 .precio {
   font-size: 4vh;
+}
+
+.product_descripction {
+  font-size: 2vh;
+}
+
+.stock_product {
+  font-size: 2vh;
 }
 
 /* Contenedor para precio + botón */
