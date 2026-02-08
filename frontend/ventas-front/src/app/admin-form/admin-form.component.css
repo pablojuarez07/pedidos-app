@@ -201,6 +201,7 @@ button:hover {
   .btn_enviar button {
     width: 70vw;
   }
+}
 
 /* 📱 Celulares medianos (480px o menos) */
 @media (max-width: 480px) {
