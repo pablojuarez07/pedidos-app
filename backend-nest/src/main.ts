@@ -19,7 +19,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: ['https://pedidos-app-alpha.vercel.app', "http://localhost:4200"],
+    origin: ['https://cuatro-coronas-alpha.vercel.app/', "http://localhost:4200"],
     methods: ['GET', 'POST', 'PUT'],
   });
 
