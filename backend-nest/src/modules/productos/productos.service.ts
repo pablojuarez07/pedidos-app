@@ -38,7 +38,7 @@ export class ProductosService {
       }
   }
 
-  async addProducto(body: CreateProductoDto, file: Express.Multer.File) {
+  async addProducto(body: CreateProductoDto, file: any) {
     try {
       const { nombre, precio, descripcion, stock, categoria } = body;
   
