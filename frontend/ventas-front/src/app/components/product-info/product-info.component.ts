@@ -60,9 +60,9 @@ export class ProductInfoComponent {
       const request_obj = {
         nombre_comprador,
         telefono,
-        cantidad,
-        producto_id: this.producto.id,
-        precio_unitario: this.producto.precio,
+        cantidad: Number(cantidad),
+        producto_id: Number(this.producto.id),
+        precio_unitario: Number(this.producto.precio),
         client_id: clientId
       };
 

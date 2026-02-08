@@ -100,9 +100,9 @@
 }
 
 .search-input {
-  width: 260px;
-  height: 30px;
-  padding: 0 14px;
+  width: 15vw;
+  height: 4vh;
+  padding: 0 0.5vh;
   border-radius: 18px;
 
   background: rgba(255,255,255,0.08);
@@ -127,6 +127,7 @@
 .search-input::placeholder {
   color: rgba(255,255,255,0.6);
   font-weight: 300;
+  font-size: 2vh;
 }
 
 @media(max-width: 720px) {

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import api from '../../services/api';
+import { SocketService } from '../../services/socket';
 
 @Component({
   selector: 'app-product-promo',
@@ -16,8 +17,39 @@ export class ProductPromoComponent {
   isAnimating = false;
   isJumping = false;
 
+  constructor(private socketService: SocketService) {}
+
   ngOnInit() {
     this.getProductos();
+
+    this.socketService.listen("producto_actualizado").subscribe((producto: any) => {
+    const index = this.productos.findIndex(p => p.id === producto.id);
+
+    // Si el producto es promo → actualizar
+    if (producto.category === 'Promoción') {
+      if (index !== -1) {
+        this.productos[index] = producto;
+      } else {
+        this.productos.push(producto);
+      }
+    } 
+    // Si dejó de ser promo → eliminar
+    else {
+      if (index !== -1) {
+        this.productos.splice(index, 1);
+      }
+    }
+
+    this.rebuildLoop();
+    });
+
+    // 🟢 NUEVO PRODUCTO
+    this.socketService.listen("nuevo_producto").subscribe((producto: any) => {
+      if (producto.category === 'Promoción') {
+        this.productos.push(producto);
+        this.rebuildLoop();
+      }
+    });
   }
 
   get transform() {
@@ -98,10 +130,25 @@ export class ProductPromoComponent {
     this.touchEndX = 0;
   }
 
+  rebuildLoop() {
+    if (this.productos.length > 0) {
+      this.productosLoop = [
+        this.productos[this.productos.length - 1],
+        ...this.productos,
+        this.productos[0]
+      ];
+      this.index = 1;
+    } else {
+      this.productosLoop = [];
+    }
+  }
+
+
   async getProductos() {
     try {
-      const data = await api.get('/productos/categoria/promoción');
+      const data = await api.get('/productos/categoria/Promoción');
       this.productos = data;
+      console.log("promos:", this.productos)
       
       if (this.productos.length > 0) {
         this.productosLoop = [
