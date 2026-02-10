@@ -37,6 +37,8 @@ export class HomeComponent {
 
   headerVisible = true;
 
+  cargandoProductos = true;
+
   onScroll(event: any) {
     const scrollTop = event.target.scrollTop;
 
@@ -69,23 +71,47 @@ export class HomeComponent {
     // escuchamos el websocket
     this.socketService.listen("nuevo_producto").subscribe((producto) => {
       console.log("Producto recibido por WebSocket:", producto);
-      this.productos.push(producto); // se agrega automáticamente
-      this.productosOriginales.push(producto);
+      this.productos = [...this.productos, producto];
+      this.productosOriginales = [...this.productosOriginales, producto];
     });
 
     this.socketService.listen("nuevo_stock").subscribe((objeto) => {
       console.log("Objeto recibido por socket: ", objeto);
       const {producto_id, stock} = objeto;
-      const producto = this.productos.find(p => p.id === producto_id);
-      if (producto) {
-        producto.stock = stock;
+      const index = this.productos.findIndex(p => p.id === producto_id);
+      if (index !== -1) {
+        // reemplazamos el objeto completo para que Angular lo detecte
+        this.productos[index] = { ...this.productos[index], stock };
       }
     });
 
     this.socketService.listen("nueva_fecha").subscribe((fecha) => {
       console.log("new date close: ", fecha);
       this.fecha_cierre = fecha;
-    })
+    });
+
+    this.socketService.listen("producto_actualizado").subscribe((producto: any) => {
+      console.log("Producto actualizado recibido por socket:", producto);
+
+      // Verificar si ya existe en el array de productos
+      const index = this.productos.findIndex(p => p.id === producto.id);
+
+      if (index !== -1) {
+        // Reemplazar el producto completo
+        this.productos[index] = producto;
+      } else {
+        // Si no existe (por ejemplo stock > 0 y antes no estaba visible), agregarlo
+        this.productos.push(producto);
+      }
+
+      // Hacer lo mismo en el array original para la búsqueda
+      const originalIndex = this.productosOriginales.findIndex(p => p.id === producto.id);
+      if (originalIndex !== -1) {
+        this.productosOriginales[originalIndex] = producto;
+      } else {
+        this.productosOriginales.push(producto);
+      }
+  });
   }
 
   initClientId() {
@@ -98,6 +124,7 @@ export class HomeComponent {
   }
 
   async cargarProductos() {
+    this.cargandoProductos = true;
     try {
       const data = await api.get("/productos");
       this.productos = data;
@@ -105,6 +132,8 @@ export class HomeComponent {
       console.log("Productos:", this.productos);
     } catch (error: any) {
       console.error("Error:", error.message)
+    } finally {
+      this.cargandoProductos = false; // fin de carga
     }
   }
 
@@ -161,5 +190,13 @@ export class HomeComponent {
     } catch (err){
       console.log("error al traer fecha: ", err)
     }
+  }
+
+  get productosVisibles() {
+    if (this.logeado) {
+      return this.productos;
+    }
+
+    return this.productos.filter(p => p.stock > 0);
   }
 }

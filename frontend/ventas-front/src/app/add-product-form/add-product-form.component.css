@@ -33,7 +33,7 @@
 .add-form-container h2 {
   text-align: center;
   margin-bottom: 10px;
-  font-size: 22px;
+  font-size: 3vh;
   color: #334;
 }
 
@@ -43,6 +43,14 @@
   flex-direction: column;
   width: 100%;
   margin-top: 1vh;
+}
+
+.form-add-product input, textarea {
+  font-size: 2vh;
+}
+
+.form-add-product input::placeholder, textarea::placeholder {
+  font-size: 2vh;
 }
 
 .form-control {
@@ -66,19 +74,20 @@
   padding: 12px;
   resize: none;   
   scrollbar-width: none;
+  font-size: 2vh;
 }
 
 /* --- Botón --- */
 button {
   width: 20vh;
   padding: 12px;
-  margin-top: 8px;
+  margin-top: 2vh;
   background: #334;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 2vh;
   transition: background 0.2s ease;
 }
 
@@ -100,11 +109,11 @@ button:hover {
   background: #c44;
   color: white;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 3vh;
+  height: 3vh;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 2vh;
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -123,7 +132,7 @@ button:hover {
   align-items: center;
   text-align: center;
   background: #f7f7f7;
-  font-size: 16px;       /* texto más legible */
+  font-size: 2vh;       /* texto más legible */
   position: relative;
   cursor: pointer;
   margin-top: 1vh;
@@ -176,10 +185,12 @@ button:hover {
 
 .custom-select .selected {
   color: #000;
+  font-size: 2vh;
 }
 
 .custom-select .selected.placeholder {
   color: #446;
+  font-size: 2vh;
 }
 
 .custom-select .options {
@@ -196,7 +207,7 @@ button:hover {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.25s ease;
-
+  font-size: 2vh;
   z-index: 2000;
 }
 
@@ -205,8 +216,8 @@ button:hover {
   right: 12px;
   top: 51%;
   transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
+  width: 3vh;
+  height: 3vh;
   pointer-events: none; /* no interfiere con el click */
   color: #334;
   transition: transform 0.25s ease;
