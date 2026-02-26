@@ -6,6 +6,9 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { Producto } from './entities/producto.entity';
+import { fileTypeFromBuffer } from 'file-type';
+import sharp from 'sharp';
+import { unlinkSync } from 'fs';
 
 @Injectable()
 export class ProductosService {
@@ -43,22 +46,42 @@ export class ProductosService {
       const { nombre, precio, descripcion, stock, categoria } = body;
   
       if (!file) {
-        throw new BadRequestException('Falta la imagen');
+        throw new BadRequestException('Debe subir una imagen.');
       }
   
       let imageValue;
   
       if (this.isProd) {
-        // 🟢 PRODUCCIÓN → Supabase
-        const fileName = `${Date.now()}-${file.originalname}`;
-  
+        // PRODUCCIÓN → Supabase
+        // Validar tipo REAL
+        const type = await fileTypeFromBuffer(file.buffer);
+
+        if (!type || !type.mime.startsWith('image/')) {
+          throw new BadRequestException('El archivo no es una imagen válida');
+        }
+
+        // Convertir SIEMPRE a JPEG real
+        let convertedBuffer: Buffer;
+
+        try {
+          convertedBuffer = await sharp(file.buffer)
+            .jpeg({ quality: 90 })
+            .toBuffer();
+        } catch {
+          throw new BadRequestException(
+            'La imagen está corrupta o dañada'
+          );
+        }
+
+        const fileName = `${Date.now()}.jpg`;
+
         const { error } = await this.supabase.storage
-          .from("productos")
-          .upload(fileName, file.buffer, {
-            contentType: file.mimetype
+          .from('productos')
+          .upload(fileName, convertedBuffer, {
+            contentType: 'image/jpeg',
           });
-  
-        if (error) throw error;
+
+        if (error) throw new InternalServerErrorException('Error al subir imagen.');
   
         const { data } = this.supabase.storage
           .from("productos")
@@ -68,9 +91,22 @@ export class ProductosService {
   
       } else {
         // 🟡 DESARROLLO → carpeta local
-        imageValue = file.filename;
+        const newFileName = `${Date.now()}.jpg`;
+        const outputPath = `./uploads/${newFileName}`;
+
+        try {
+          await sharp(file.path)
+            .jpeg({ quality: 90 })
+            .toFile(outputPath);
+        } catch {
+          unlinkSync(file.path);
+          throw new BadRequestException(
+            'La imagen está corrupta o dañada'
+          );
+        }
+        unlinkSync(file.path);
+        imageValue = newFileName;
       }
-  
   
       // 3️⃣ Guardar producto con URL
       const sql = `
@@ -108,6 +144,12 @@ export class ProductosService {
   
     } catch (error) {
       console.error("Error al agregar producto:", error);
+
+      // NO pisar errores ya controlados
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
       throw new InternalServerErrorException('Error al agregar el Prodcuto');
     }
   }

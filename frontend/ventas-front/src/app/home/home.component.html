@@ -5,7 +5,7 @@
 />
 
 <div class="home_container">
-   <div class="scroll" #scrollContainer (scroll)="onScroll($event)">
+  <div class="scroll" #scrollContainer (scroll)="onScroll($event)">
     <div class="articulos" *ngIf="vistaActual === 'productos'">
 
       <div class="promo-shell" [class.hidden]="!promoVisible">
@@ -136,5 +136,6 @@
                       
     <app-admin-form *ngIf="adminForm" (close)="mostrarAdminForm()" (logeado)="login()"/>
     <app-add-product-form *ngIf="productForm" (close)="mostrarProductForm()" />
+    <app-chatbot />
   </div>
 </div>

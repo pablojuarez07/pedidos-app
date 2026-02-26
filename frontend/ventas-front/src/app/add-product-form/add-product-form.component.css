@@ -247,7 +247,16 @@ button:hover {
 }
 
 .form-add-product {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
+}
+
+.error-message {
+  background: #ffe5e5;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 @media(max-width: 720px) {
