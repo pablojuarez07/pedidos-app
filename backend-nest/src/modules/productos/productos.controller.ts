@@ -1,15 +1,18 @@
-import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
+import { fileTypeFromBuffer } from 'file-type';
 
 @Controller('productos')
 export class ProductosController {
   constructor(private productosService: ProductosService) {}
+
+  private isProd = process.env.NODE_ENV === 'production';
 
   // obtener productos
   @Get()
@@ -21,25 +24,50 @@ export class ProductosController {
   @Post('add')
   @UseInterceptors(
     FileInterceptor('imagen', {
-      storage: diskStorage({
-        destination: './uploads', // carpeta
-        filename: (req, file, cb) => {
-          const unique = Date.now() + extname(file.originalname);
-          cb(null, unique);
-        }
-      }),
+      storage:
+        process.env.NODE_ENV === 'production'
+          ? memoryStorage()
+          : diskStorage({
+              destination: './uploads',
+              filename: (req, file, cb) => {
+                const unique =
+                  Date.now() + '-' + Math.round(Math.random() * 1e9);
+                cb(null, unique + extname(file.originalname));
+              },
+            }),
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+      },
       fileFilter: (req, file, cb) => {
         if (!file.mimetype.startsWith('image/')) {
-          cb(new Error('Solo imágenes'), false);
+          return cb(
+            new BadRequestException('Solo se permiten imágenes'),
+            false,
+          );
         }
         cb(null, true);
-      }
+      },
     }),
   )
-  addProducto(
+  async addProducto(
     @UploadedFile() file: Express.Multer.File,
-    @Body() body: CreateProductoDto
-  ){
+    @Body() body: CreateProductoDto,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Debe subir una imagen');
+    }
+
+    // Validación REAL del archivo (solo en producción o si hay buffer)
+    if (this.isProd) {
+      const type = await fileTypeFromBuffer(file.buffer);
+
+      if (!type || !type.mime.startsWith('image/')) {
+        throw new BadRequestException(
+          'El archivo no es una imagen válida',
+        );
+      }
+    }
+
     return this.productosService.addProducto(body, file);
   }
 

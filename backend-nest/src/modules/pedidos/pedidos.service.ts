@@ -11,6 +11,36 @@ export class PedidosService {
     private readonly socketGateway: SocketGateway,
   ) {}
 
+  private construirFiltrosQuery(
+    filtros: { fecha_desde?: string; fecha_hasta?: string; estado?: string },
+    params: any[],
+    startIndex: number,
+  ) {
+    let queryExtra = '';
+    let paramIndex = startIndex;
+
+    // 🔹 Filtro por estado
+    if (filtros.estado && filtros.estado !== 'null') {
+      queryExtra += ` AND p.estado = $${paramIndex}`;
+      params.push(filtros.estado);
+      paramIndex++;
+    }
+
+    if (filtros.fecha_desde) {
+      queryExtra += ` AND DATE(p.fecha) >= $${paramIndex}`;
+      params.push(filtros.fecha_desde);
+      paramIndex++;
+    }
+
+    if (filtros.fecha_hasta) {
+      queryExtra += ` AND DATE(p.fecha) <= $${paramIndex}`;
+      params.push(filtros.fecha_hasta);
+      paramIndex++;
+    }
+
+    return queryExtra;
+  }
+
   async crearPedido(dto: CrearPedidoDto) {
     const conn = await this.database.getClient();
 
@@ -116,6 +146,78 @@ export class PedidosService {
     }));
   }
 
+  // para IA
+  async getPedidosClienteFiltrado(
+    clientId: string,
+    filtros: { fecha_desde?: string; fecha_hasta?: string; estado?: string },
+  ) {
+    const isProd = process.env.NODE_ENV === 'production';
+    const back_url = process.env.BACK_URL;
+
+    let query = `
+      SELECT 
+        p.id, p.fecha, p.total, p.estado,
+        p.nombre_comprador, p.telefono,
+        pr.nombre, pr.imagen,
+        pd.cantidad, pd.precio_unitario
+      FROM pedidos p
+      JOIN pedido_detalle pd ON pd.pedido_id = p.id
+      JOIN productos pr ON pr.id = pd.producto_id
+      WHERE p.client_id = $1
+    `;
+
+    const params: any[] = [clientId];
+
+    query += this.construirFiltrosQuery(filtros, params, 2);
+
+    query += ` ORDER BY p.fecha DESC`;
+
+    const { rows } = await this.database.query(query, params);
+
+    return rows.map(r => ({
+      ...r,
+      imagen_url: isProd ? r.imagen : `${back_url}/uploads/${r.imagen}`,
+    }));
+  }
+
+  async sumarTotalPedidosClienteFiltrado(
+    clientId: string,
+    filtros: { periodo?: string; estado?: string },
+  ) {
+    let query = `
+      SELECT COALESCE(SUM(p.total), 0) as total
+      FROM pedidos p
+      WHERE p.client_id = $1
+    `;
+
+    const params: any[] = [clientId];
+
+    query += this.construirFiltrosQuery(filtros, params, 2);
+
+    const { rows } = await this.database.query(query, params);
+
+    return Number(rows[0].total);
+  }
+
+  async contarPedidosClienteFiltrado(
+    clientId: string,
+    filtros: { periodo?: string; estado?: string },
+  ) {
+    let query = `
+      SELECT COUNT(*) as total
+      FROM pedidos p
+      WHERE p.client_id = $1
+    `;
+
+    const params: any[] = [clientId];
+
+    query += this.construirFiltrosQuery(filtros, params, 2);
+
+    const { rows } = await this.database.query(query, params);
+
+    return Number(rows[0].total);
+  }
+
   async cambiarEstado(id: number, nuevoEstado: string) {
     const conn = await this.database.getClient();
     const stocksActualizados: any[] = [];
@@ -196,7 +298,7 @@ export class PedidosService {
         }
       };
 
-      // 🧠 3. Lógica de transición
+      // 3. Lógica de transición
       if (
         (estadoActual === 'pendiente' || estadoActual === 'entregado') &&
         nuevoEstado === 'cancelado'
@@ -209,7 +311,7 @@ export class PedidosService {
         await descontarStock();
       }
 
-      // 📝 4. Update estado
+      // 4. Update estado
       await conn.query('UPDATE pedidos SET estado = $1 WHERE id = $2', [
         nuevoEstado,
         id,
@@ -217,7 +319,7 @@ export class PedidosService {
 
       await conn.query('COMMIT');
 
-      // 📡 5. Emitir sockets después del commit
+      // 5. Emitir sockets después del commit
       for (const s of stocksActualizados) {
         this.socketGateway.server.emit('nuevo_stock', s);
       }

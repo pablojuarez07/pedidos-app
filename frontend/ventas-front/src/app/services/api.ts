@@ -1,4 +1,5 @@
-const API_URL = "https://pedidos-app-emyj.onrender.com";
+import { environment } from '../../environments/environment';
+const API_URL = environment.apiUrl;
 
 async function request(method: string, endpoint: string, data: any = null): Promise<any> {
   const options: RequestInit = {
@@ -11,7 +12,12 @@ async function request(method: string, endpoint: string, data: any = null): Prom
   const response = await fetch(`${API_URL}${endpoint}`, options);
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.error || "Error en la petición");
+    const message =
+    error.message ||   // ← aquí está lo importante
+    error.error ||
+    "Error en la petición";
+
+    throw new Error(Array.isArray(message) ? message.join(", ") : message);
   }
 
   return response.json();
@@ -25,7 +31,14 @@ async function requestForm(endpoint: string, formData: FormData): Promise<any> {
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.error || "Error en la petición");
+    const message =
+    error.message ||   // ← aquí está lo importante
+    error.error ||
+    "Error en la petición";
+
+    throw new Error(
+      Array.isArray(message) ? message.join(", ") : message
+    );
   }
 
   return response.json();

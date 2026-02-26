@@ -1,0 +1,69 @@
+<!-- BOTÓN FLOTANTE -->
+<button class="chat-toggle" (click)="toggleChat()">
+  <svg data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" 
+          d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"></path>
+  </svg>
+</button>
+
+<!-- VENTANA -->
+<div class="chat-container" *ngIf="abierto" @chatAnimation>
+
+  <div class="chat-header">
+    Asistente de Pedidos
+  </div>
+
+  <div class="chat-body">
+
+    <div *ngFor="let msg of mensajes">
+
+      <!-- MENSAJE USUARIO -->
+      <div *ngIf="msg.tipo === 'usuario'" class="mensaje usuario">
+        {{ msg.texto }}
+      </div>
+
+      <!-- RESPUESTA BOT -->
+      <div *ngIf="msg.tipo === 'bot'" class="mensaje bot">
+
+        <div *ngIf="msg.texto" class="bot-texto">
+          {{ msg.texto }}
+        </div>
+
+        <div *ngFor="let bloque of msg.pedidos">
+
+          <table *ngIf="bloque.lista?.length">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of bloque.lista">
+                <td>{{ p.nombre }}</td>
+                <td>{{ p.fecha | date:'dd/MM/yy HH:mm' }}</td>
+                <td>{{ p.cantidad }}</td>
+                <td>${{ p.total }}</td>
+                <td>{{ p.estado }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="chat-footer">
+    <input [(ngModel)]="mensajeInput"
+           (keyup.enter)="enviarMensaje()"
+           placeholder="Escribí tu consulta..." />
+    <button (click)="enviarMensaje()">Enviar</button>
+  </div>
+
+</div>

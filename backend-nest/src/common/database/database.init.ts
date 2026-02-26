@@ -5,14 +5,19 @@ import * as path from 'path';
 export async function ensureDatabaseExists() {
   if (process.env.NODE_ENV === 'production') return;
 
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL no está definida');
+  }
+
   const dbName = 'ventas-pg';
 
+  // 🔹 Conectar a la base "postgres" del mismo servidor
+  const systemUrl = databaseUrl.replace(/\/[^/]+$/, '/postgres');
+
   const systemClient = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: process.env.DB_PASS,
-    database: 'postgres',
+    connectionString: systemUrl,
   });
 
   await systemClient.connect();
@@ -32,13 +37,9 @@ export async function ensureDatabaseExists() {
 
   await systemClient.end();
 
-  // 🔥 Ahora conectar a ventas-pg
+  // 🔹 Ahora conectar a ventas-pg usando DATABASE_URL directamente
   const appClient = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: process.env.DB_PASS,
-    database: dbName,
+    connectionString: databaseUrl,
   });
 
   await appClient.connect();

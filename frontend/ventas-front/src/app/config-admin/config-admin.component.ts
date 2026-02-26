@@ -53,7 +53,7 @@ export class ConfigAdminComponent {
       this.passwordMsg = 'Contraseña actualizada correctamente';
       this.passwordForm.reset();
     } catch (err: any) {
-      this.passwordMsg = err?.response?.data?.error || 'Error al cambiar contraseña';
+      this.passwordMsg = err?.message || 'Error al cambiar contraseña';
     }
   }
 
@@ -70,8 +70,7 @@ export class ConfigAdminComponent {
       this.emailMsg = 'Email actualizado correctamente';
       this.emailForm.reset();
     } catch (err: any) {
-      console.log('ERROR PASSWORD:', err);
-      this.passwordMsg = err.message || 'Error al actualizar contraseña';
+      this.emailMsg = err?.menssage || 'Error al actualizar email';
     }
   }
 
@@ -90,7 +89,7 @@ export class ConfigAdminComponent {
 
       this.cierreMsg = 'Fecha de cierre actualizada';
     } catch (err: any) {
-      this.cierreMsg = err?.response?.data?.error || 'Error al actualizar fecha';
+      this.cierreMsg = err?.menssage || 'Error al actualizar fecha';
     }
   }
 }

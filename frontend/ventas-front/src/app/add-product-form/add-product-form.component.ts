@@ -28,6 +28,8 @@ export class AddProductFormComponent {
   @Output() close = new EventEmitter<void>();
   selectedImage: File | null = null;
   isDragOver = false;
+  errorMessage = signal<string | null>(null);
+  loading = signal(false);
 
   addProduct_form = signal<FormGroup>(
       new FormGroup(
@@ -72,9 +74,12 @@ export class AddProductFormComponent {
 
   async addProduct(){
     if (this.addProduct_form().invalid || !this.selectedImage) {
-      alert("Complete todos los campos y seleccione una imagen.");
+      this.errorMessage.set("Complete todos los campos y seleccione una imagen.");
       return;
     }
+
+    this.errorMessage.set(null);
+    this.loading.set(true);
 
     const data = this.addProduct_form().value;
 
@@ -90,9 +95,17 @@ export class AddProductFormComponent {
       const res = await api.postForm("/productos/add", formData);
       console.log("Producto creado:", res.data);
       this.cerrar();
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Error al crear el producto");
+    } catch (err: any) {
+      console.error("Error al crear producto:", err);
+      console.log("test: ", err);
+
+      // Si backend manda mensaje específico
+      const backendMessage = err?.message || "Error al crear el producto";
+      this.errorMessage.set(backendMessage);
+
+      this.loading.set(false);
+    } finally {
+      this.loading.set(false);
     }
   }
   

@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@google/genai": "^1.42.0",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
@@ -29,12 +30,9 @@
     "@nestjs/platform-socket.io": "^11.1.13",
     "@nestjs/websockets": "^11.1.13",
     "@supabase/supabase-js": "^2.95.3",
-    "typescript": "^5.7.3",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "@types/node": "^22.10.7",
     "@types/express": "^4.17.21",
     "@types/multer": "^2.0.0",
+    "@types/node": "^22.10.7",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
@@ -43,7 +41,11 @@
     "pg": "^8.18.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.8.3"
+    "sharp": "^0.34.5",
+    "socket.io": "^4.8.3",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

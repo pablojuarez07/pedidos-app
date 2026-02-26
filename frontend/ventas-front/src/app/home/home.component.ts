@@ -11,14 +11,16 @@ import { ProductPromoComponent } from "../components/product-promo/product-promo
 import { HeaderSearchComponent } from '../header-search/header-search.component';
 import { PedidosPlanillaComponent } from '../pedidos-planilla/pedidos-planilla.component';
 import { ConfigAdminComponent } from '../config-admin/config-admin.component';
+import { ChatbotComponent } from "../chatbot/chatbot.component";
 
 @Component({
   selector: 'app-home',
   imports: [
     ProductCardComponent, CommonModule, MenuLateralComponent,
     AdminFormComponent, AddProductFormComponent, ProductInfoComponent,
-    ProductPromoComponent,HeaderSearchComponent, PedidosPlanillaComponent,
-    ConfigAdminComponent
+    ProductPromoComponent, HeaderSearchComponent, PedidosPlanillaComponent,
+    ConfigAdminComponent,
+    ChatbotComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

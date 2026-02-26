@@ -7,6 +7,7 @@ import { SocketModule } from 'src/common/socket/socket.module';
 @Module({
   controllers: [PedidosController],
   providers: [PedidosService],
-  imports: [DatabaseModule, SocketModule]
+  imports: [DatabaseModule, SocketModule],
+  exports: [PedidosService]
 })
 export class PedidosModule {}

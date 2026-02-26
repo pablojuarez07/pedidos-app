@@ -1,29 +1,49 @@
 import { TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+
 import { AppComponent } from './app.component';
+import { SocketService } from './services/socket';
 
 describe('AppComponent', () => {
+  let socketServiceMock: jasmine.SpyObj<SocketService>;
+
   beforeEach(async () => {
+    socketServiceMock = jasmine.createSpyObj('SocketService', [
+      'connect',
+      'listen',
+      'emit',
+      'disconnect'
+    ]);
+
+    socketServiceMock.listen.and.returnValue(of());
+
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        { provide: SocketService, useValue: socketServiceMock },
+        provideNoopAnimations()
+      ],
+      schemas: [NO_ERRORS_SCHEMA] // 🔥 CLAVE
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('debería crearse el componente', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it(`should have the 'ventas-front' title`, () => {
+  it('debería llamar connect al iniciar', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ventas-front');
+    fixture.detectChanges();
+    expect(socketServiceMock.connect).toHaveBeenCalled();
   });
 
-  it('should render title', () => {
+  it('debería renderizar app-home cuando corresponde', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ventas-front');
+    expect(compiled.querySelector('app-home')).not.toBeNull();
   });
 });

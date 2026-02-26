@@ -61,10 +61,14 @@
       <div class="btn_enviar">
         <button type="submit"
                 (click)="addProduct()"
-                [ngClass]="{ 'disabled-btn': addProduct_form().invalid }">
-          Añadir Producto
+                [disabled]="addProduct_form().invalid || loading()"
+                [ngClass]="{ 'disabled-btn': addProduct_form().invalid || loading() }">
+          {{ loading() ? 'Guardando...' : 'Añadir Producto' }}
         </button>
       </div>
     </form>
+    <div class="error-message" *ngIf="errorMessage()">
+      {{ errorMessage() }}
+    </div>
   </div>
 </div>

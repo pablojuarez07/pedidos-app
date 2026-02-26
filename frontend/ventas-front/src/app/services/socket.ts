@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+
+const SOCKET_URL = environment.socketUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +13,7 @@ export class SocketService {
 
   connect() {
     // Conectamos al backend (cambiá el puerto si tu backend usa otro)
-    this.socket = io('https://pedidos-app-emyj.onrender.com', {
+    this.socket = io(SOCKET_URL, {
       transports: ['websocket'], // asegura conexión estable
     });
 
