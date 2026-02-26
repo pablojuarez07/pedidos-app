@@ -15,22 +15,22 @@
 
   <div class="chat-body">
     
-    <div *ngFor="let msg of mensajes">
+    <div *ngFor="let msg of mensajes; trackBy: trackByIndex; let last = last">
 
       <!-- MENSAJE USUARIO -->
-      <div *ngIf="msg.tipo === 'usuario'" class="mensaje usuario">
+      <div *ngIf="msg.tipo === 'usuario'" class="mensaje usuario" [attr.data-last]="last ? true : null">
         {{ msg.texto }}
+        <!-- Referencia solo en el último mensaje -->
+        <span *ngIf="last" #ultimoMensaje></span>
       </div>
 
       <!-- RESPUESTA BOT -->
-      <div *ngIf="msg.tipo === 'bot'" class="mensaje bot">
-
+      <div *ngIf="msg.tipo === 'bot'" class="mensaje bot" [attr.data-last]="last ? true : null">
         <div *ngIf="msg.texto" class="bot-texto">
           {{ msg.texto }}
         </div>
 
         <div *ngFor="let bloque of msg.pedidos">
-
           <table *ngIf="bloque.lista?.length">
             <thead>
               <tr>
@@ -51,10 +51,12 @@
               </tr>
             </tbody>
           </table>
-
         </div>
-      </div>
 
+        <!-- Referencia solo en el último mensaje -->
+        <span *ngIf="last" #ultimoMensaje></span>
+      </div>
+      
     </div>
 
   </div>

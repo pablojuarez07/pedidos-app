@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import api from '../services/api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -51,7 +51,7 @@ interface Mensaje {
   ]
 })
 export class ChatbotComponent {
-
+  @ViewChild('ultimoMensaje') ultimoMensaje!: ElementRef<HTMLDivElement>;
   abierto = false;
   mensajeInput = '';
   mensajes: Mensaje[] = [];
@@ -71,6 +71,12 @@ export class ChatbotComponent {
             
             Probá escribiendo: "Mis pedidos", "Cuánto gasté este mes" o "Pedidos entregados en 2025".`
       });
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.ultimoMensaje) {
+      this.ultimoMensaje.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -107,5 +113,9 @@ export class ChatbotComponent {
         texto: 'Ocurrió un error al procesar tu solicitud.'
       });
     }
+  }
+
+  trackByIndex(index: number, item: any): number {
+    return index;
   }
 }
