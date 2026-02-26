@@ -97,6 +97,22 @@ export class AiController {
     }
     let respuesta = interpretacion.respuesta_template || '';
 
+    // Detectar si hubo intención de listar
+    const huboListar = interpretacion.acciones.some(
+      (a: any) => a.intencion === 'listar_pedidos'
+    );
+
+    // Contar pedidos reales
+    const totalPedidos = resultadoFinal.pedidos.reduce(
+      (acc, bloque) => acc + (bloque.lista?.length || 0),
+      0
+    );
+
+    // Si pidió listar y no hay NINGÚN pedido real
+    if (huboListar && totalPedidos === 0) {
+      respuesta = 'No tenés pedidos registrados.';
+    }
+
     for (const resultado of resultadoFinal.resultados) {
       respuesta = respuesta.replace(
         new RegExp(`{{${resultado.tipo}}}`, 'g'),
