@@ -6,6 +6,7 @@ import { SocketModule } from 'src/common/socket/socket.module';
 @Module({
   imports: [SocketModule],
   controllers: [AdminController],
-  providers: [AdminService]
+  providers: [AdminService],
+  exports: [AdminService],
 })
 export class AdminModule {}

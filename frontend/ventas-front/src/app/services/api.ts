@@ -2,9 +2,19 @@ import { environment } from '../../environments/environment';
 const API_URL = environment.apiUrl;
 
 async function request(method: string, endpoint: string, data: any = null): Promise<any> {
+  const token = localStorage.getItem("token");
+
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const options: RequestInit = {
     method,
-    headers: { "Content-Type": "application/json" }
+    headers,
   };
 
   if (data) options.body = JSON.stringify(data);
@@ -24,17 +34,26 @@ async function request(method: string, endpoint: string, data: any = null): Prom
 }
 
 async function requestForm(endpoint: string, formData: FormData): Promise<any> {
+  const token = localStorage.getItem("token");
+
+  const headers: HeadersInit = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${API_URL}${endpoint}`, {
     method: "POST",
-    body: formData,   // ❗ sin headers
+    headers,
+    body: formData, 
   });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     const message =
-    error.message ||   // ← aquí está lo importante
-    error.error ||
-    "Error en la petición";
+      error.message ||
+      error.error ||
+      "Error en la petición";
 
     throw new Error(
       Array.isArray(message) ? message.join(", ") : message

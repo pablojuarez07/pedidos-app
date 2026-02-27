@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductosService } from './productos.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
@@ -7,6 +7,7 @@ import { extname } from 'path';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { fileTypeFromBuffer } from 'file-type';
+import { JwtAuthGuard } from 'src/common/auth/jwt-auth.guard';
 
 @Controller('productos')
 export class ProductosController {
@@ -21,6 +22,7 @@ export class ProductosController {
   }
 
   // añadir un producto
+  @UseGuards(JwtAuthGuard)
   @Post('add')
   @UseInterceptors(
     FileInterceptor('imagen', {
@@ -78,6 +80,7 @@ export class ProductosController {
   }
 
   // Editar Producto
+  @UseGuards(JwtAuthGuard)
   @Put('edit/:id')
   editarProducto(@Param('id') id: string, @Body() body: UpdateProductoDto){
     return this.productosService.editarProducto(Number(id), body);
