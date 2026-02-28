@@ -47,8 +47,8 @@ export class AdminFormComponent {
     const { email, password } = this.admin_form().value;
 
     try {
-      const res = await api.post("/user/login", { email: email, password: password });
-      console.log("login exitoso");
+      const res = await api.post("/auth/login", { email: email, password: password });
+      localStorage.setItem("token", res.access_token);
       this.close.emit();
       this.logeado.emit();
     } catch (err: any){

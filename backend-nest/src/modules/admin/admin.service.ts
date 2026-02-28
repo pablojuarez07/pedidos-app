@@ -15,35 +15,6 @@ export class AdminService {
     private socketGateway: SocketGateway
   ) {}
 
-  async login(body: LoginAdminDto) {
-    const { email, password } = body;
-
-    if (!email || !password) {
-      throw new BadRequestException('Faltan datos');
-    }
-
-    const result = await this.database.query(
-      'SELECT * FROM admin WHERE email = $1',
-      [email],
-    );
-
-    if (result.rows.length === 0) {
-      throw new UnauthorizedException('Usuario o contraseña incorrectos');
-    }
-
-    const admin = result.rows[0];
-    const coincide = await bcrypt.compare(password, admin.password);
-
-    if (!coincide) {
-      throw new UnauthorizedException('Usuario o contraseña incorrectos');
-    }
-
-    return {
-      message: 'Login correcto',
-      admin: { id: admin.id, email: admin.email },
-    };
-  }
-
   async changePassword(body: ChangePasswordDto) {
     const { oldPassword, newPassword } = body;
 
@@ -93,8 +64,16 @@ export class AdminService {
 
   async getAdmin() {
     const result = await this.database.query(
-      'SELECT email, cierre_campania FROM admin LIMIT 1',
+      'SELECT email, password FROM admin LIMIT 1',
     );
+    return result.rows[0];
+  }
+
+  async getCierreCampania() {
+    const result = await this.database.query(
+      'SELECT cierre_campania FROM admin LIMIT 1',
+    );
+
     return result.rows[0];
   }
 }

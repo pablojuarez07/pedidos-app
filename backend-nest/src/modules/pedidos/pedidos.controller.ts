@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PedidosService } from './pedidos.service';
 import { CrearPedidoDto } from './dto/create-pedido.dto';
 import { CambiarEstadoDto } from './dto/cambiar-estado.dto';
+import { JwtAuthGuard } from 'src/common/auth/jwt-auth.guard';
 
 @Controller('pedidos')
 export class PedidosController {
@@ -12,6 +13,7 @@ export class PedidosController {
     return this.pedidosService.crearPedido(dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('planilla')
   planilla() {
     return this.pedidosService.getPlanilla();

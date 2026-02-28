@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SupabaseModule } from './common/supabase/supabase.module';
 import { PedidosModule } from './modules/pedidos/pedidos.module';
 import { AiModule } from './modules/ai/ai.module';
+import { AuthModule } from './common/auth/auth.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { AiModule } from './modules/ai/ai.module';
     AdminModule, 
     DatabaseModule, 
     ProductosModule, 
-    SocketModule, SupabaseModule, PedidosModule, AiModule
+    SocketModule, SupabaseModule, PedidosModule, AiModule, AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
