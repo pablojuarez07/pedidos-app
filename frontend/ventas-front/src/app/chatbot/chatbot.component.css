@@ -1,5 +1,6 @@
 .chat-toggle {
   position: fixed;
+  margin-top: auto;
   bottom: 5vh;
   right: 20px;
   width: 60px;
@@ -123,17 +124,32 @@ th {
   background: #f0f0f0;
 }
 
-@media (max-width: 460px) {
+@media (max-width: 720px) {
   .chat-container {
     width: 90vw;
     height: 70vh;
     right: 5vw;
-    top: 10vh;
+    bottom: 15vh;
   }
 
   .chat-toggle {
     z-index: 1001;
-    bottom: 9vh;
+    bottom: 5vh;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-container {
+    width: 90vw;
+    height: 70vh;
+    right: 5vw;
+    bottom: 15vh;
+  }
+
+  .chat-toggle {
+    z-index: 1001;
+    bottom: 5vh;
     right: 10px;
   }
 }
