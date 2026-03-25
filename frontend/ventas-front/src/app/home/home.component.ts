@@ -187,7 +187,7 @@ export class HomeComponent {
   fecha_cierre: any;
   async getCierreCampaña () {
     try {
-      const data = await api.get('/user/admin');
+      const data = await api.get('/user/cierre-campania');
       this.fecha_cierre = data.cierre_campania?.split('T')[0];
     } catch (err){
       console.log("error al traer fecha: ", err)

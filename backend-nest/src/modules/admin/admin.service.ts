@@ -76,4 +76,23 @@ export class AdminService {
 
     return result.rows[0];
   }
+
+  async keepAlive() {
+    try {
+      await this.database.query(
+        'SELECT id FROM pedidos LIMIT 1'
+      );
+
+      return {
+        status: 'ok',
+        message: 'Keep alive funcionando',
+        timestamp: new Date(),
+      };
+    } catch (err) {
+      return {
+        status: 'error',
+        message: err.message,
+      };
+    }
+  }
 }

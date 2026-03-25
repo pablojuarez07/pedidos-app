@@ -1,6 +1,6 @@
 .chat-toggle {
   position: fixed;
-  bottom: 0;
+  bottom: 5vh;
   right: 20px;
   width: 60px;
   height: 60px;
@@ -28,7 +28,7 @@
 
 .chat-container {
   position: fixed;
-  bottom: 90px;
+  bottom: 15vh;
   right: 20px;
   width: 360px;
   height: 80vh;
@@ -133,7 +133,7 @@ th {
 
   .chat-toggle {
     z-index: 1001;
-    bottom: 12vh;
-    right: 5px;
+    bottom: 9vh;
+    right: 10px;
   }
 }

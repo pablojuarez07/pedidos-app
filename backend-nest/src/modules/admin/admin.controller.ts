@@ -33,4 +33,9 @@ export class AdminController {
   getCierreCampania() {
     return this.adminService.getCierreCampania();
   }
+  
+  @Get('keep-alive')
+  async keepAlive() {
+    return this.adminService.keepAlive();
+  }
 }
