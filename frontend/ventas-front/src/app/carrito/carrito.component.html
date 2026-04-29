@@ -21,9 +21,11 @@
       <div class="pedido-info">
         <p><b>Pedido {{ p.nombre }}</b></p>
         <p>Total: ${{ p.total }}</p>
-        <p [class]="p.estado" class="estado"> Estado: {{ p.estado }}</p>
         <p>Cantidad: {{p.cantidad}}</p>
-        <p>{{ p.fecha | date:'short' }}</p>
+        <p [class]="p.estado" class="estado"> Estado: {{ p.estado }}</p>
+        <p [class]="p.pagado ? 'si' : 'no'" class="tipo_pago">Pagado: {{ p.pagado ? 'Sí' : 'No' }}</p>
+        <p>Tipo pago: {{ p.tipo_pago }}</p>
+        <p>{{ p.fecha | date:'dd/MM/yy' }}</p>
         <div class="btn-wrapper">
           <button 
             *ngIf="confirmandoId !== p.id && p.estado !== 'entregado'"

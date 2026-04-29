@@ -200,6 +200,86 @@ input:focus {
   height: 3vh;
 }
 
+.custom-select {
+  position: relative;
+  width: 93%;
+  height: 1vh;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1vh;
+  display: flex;
+  align-items: center;
+
+}
+
+.custom-select .selected {
+  color: #000;
+  font-size: 2vh;
+}
+
+.custom-select .selected.placeholder {
+  color: #446;
+  font-size: 2vh;
+}
+
+.custom-select .options {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  font-size: 2vh;
+  z-index: 2000;
+}
+
+.custom-select svg {
+  position: absolute;
+  right: 12px;
+  top: 51%;
+  transform: translateY(-50%);
+  width: 3vh;
+  height: 3vh;
+  pointer-events: none; /* no interfiere con el click */
+  color: #334;
+  transition: transform 0.25s ease;
+}
+
+.custom-select.open svg {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Estado abierto con animación */
+.custom-select .options.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Items */
+.custom-select .option {
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  color: #000;
+  height: 1vh;
+  border-radius: 10px;
+}
+
+.custom-select .option:hover {
+  background: #cccccc;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .info-panel {

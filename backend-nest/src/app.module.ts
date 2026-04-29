@@ -11,6 +11,7 @@ import { SupabaseModule } from './common/supabase/supabase.module';
 import { PedidosModule } from './modules/pedidos/pedidos.module';
 import { AiModule } from './modules/ai/ai.module';
 import { AuthModule } from './common/auth/auth.module';
+import { PagosModule } from './modules/pagos/pagos.module';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AuthModule } from './common/auth/auth.module';
     AdminModule, 
     DatabaseModule, 
     ProductosModule, 
-    SocketModule, SupabaseModule, PedidosModule, AiModule, AuthModule
+    SocketModule, SupabaseModule, PedidosModule, AiModule, AuthModule, PagosModule
   ],
   controllers: [AppController],
   providers: [AppService],

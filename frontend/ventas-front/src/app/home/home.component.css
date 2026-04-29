@@ -6,6 +6,7 @@
   width: 100vw;
   overflow: hidden;
   position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .scroll {

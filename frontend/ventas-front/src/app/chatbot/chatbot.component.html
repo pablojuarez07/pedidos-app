@@ -39,6 +39,8 @@
                 <th>Cantidad</th>
                 <th>Total</th>
                 <th>Estado</th>
+                <th>Pagado</th>
+                <th>Tipo de Pago</th>
               </tr>
             </thead>
             <tbody>
@@ -48,6 +50,8 @@
                 <td>{{ p.cantidad }}</td>
                 <td>${{ p.total }}</td>
                 <td>{{ p.estado }}</td>
+                <td>{{ p.pagado ? 'Sí' : 'No' }}</td>
+                <td>{{ p.tipo_pago }}</td>
               </tr>
             </tbody>
           </table>

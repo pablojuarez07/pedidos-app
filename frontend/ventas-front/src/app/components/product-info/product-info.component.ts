@@ -20,7 +20,8 @@ export class ProductInfoComponent {
     new FormGroup ({
       nombre_comprador: new FormControl('', [Validators.required]),
       telefono: new FormControl(''),
-      cantidad: new FormControl('', [Validators.required, Validators.min(1)])
+      cantidad: new FormControl('', [Validators.required, Validators.min(1)]),
+      tipo_pago: new FormControl('', [Validators.required])
     })
   )
 
@@ -45,38 +46,49 @@ export class ProductInfoComponent {
 
   close() {
     this.visible = false;
+    this.form_pedido().reset();
   }
 
   async realizarPedido() {
     if (this.form_pedido().invalid) return;
-
     this.enviando = true;
     this.errorPedido = '';
 
     try {
-      const { nombre_comprador, telefono, cantidad } = this.form_pedido().value;
+      const { nombre_comprador, telefono, cantidad, tipo_pago } = this.form_pedido().value;
       const clientId = localStorage.getItem('client_id');
 
       const request_obj = {
+        product_name: this.producto.nombre,
         nombre_comprador,
         telefono,
         cantidad: Number(cantidad),
         producto_id: Number(this.producto.id),
         precio_unitario: Number(this.producto.precio),
-        client_id: clientId
+        client_id: clientId,
+        tipo_pago
       };
 
-      await api.post("/pedidos/add", request_obj);
+      // EFECTIVO
+      if (tipo_pago === 'efectivo') {
+        await api.post("/pedidos/add", request_obj);
 
-      // ✅ ÉXITO
-      this.pedidoExitoso = true;
-      this.form_pedido().reset();
+        this.pedidoExitoso = true;
+        this.form_pedido().reset();
 
-      // cerrar después de 1.5s
-      setTimeout(() => {
-        this.pedidoExitoso = false;
-        this.close();
-      }, 1500);
+        setTimeout(() => {
+          this.pedidoExitoso = false;
+          this.close();
+        }, 1500);
+      }
+
+      // MERCADO PAGO
+      if (tipo_pago === 'mercadopago') {
+        const res = await api.post("/pagos/crear-preferencia", request_obj);
+
+        // REDIRECCIÓN
+        window.location.href = res.init_point;
+      }
 
     } catch (err) {
       console.error(err);
@@ -86,4 +98,15 @@ export class ProductInfoComponent {
     }
   }
 
+  isOpen = false;
+  selectedType: String | null = null;
+
+  selectPago(type: string) {
+    this.selectedType = (type == "efectivo") ? "Efectivo" : "Mercado Pago";
+    this.form_pedido().get('tipo_pago')?.setValue(type);
+  }
+
+  toggleSelect() {
+    this.isOpen = !this.isOpen;
+  }
 }
