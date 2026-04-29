@@ -85,4 +85,10 @@ export class ProductosController {
   editarProducto(@Param('id') id: string, @Body() body: UpdateProductoDto){
     return this.productosService.editarProducto(Number(id), body);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('delete/:id')
+  eleiminarProducto(@Param('id') id: string){
+    return this.productosService.eliminarProducto(Number(id));
+  }
 }

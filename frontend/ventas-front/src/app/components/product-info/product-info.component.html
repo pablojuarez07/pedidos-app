@@ -33,6 +33,34 @@
                 min="1">
         </label>
 
+        <label>
+          Tipo de pago:
+          <div class="custom-select" (click)="toggleSelect()" [class.open]="isOpen">
+            <div class="selected" [class.placeholder]="!selectedType">
+              {{ selectedType || "Seleccionar Tipo de Pago" }}
+            </div>
+
+            <svg data-slot="icon" fill="none" stroke-width="1.5" 
+                stroke="currentColor" viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+            </svg>
+
+            <div class="options" [class.open]="isOpen">
+              <div 
+                class="option" 
+                (click)="selectPago('efectivo')">
+                Efectivo
+              </div>
+              <div 
+                class="option" 
+                (click)="selectPago('mercadopago')">
+                Mercado Pago
+              </div>
+            </div>
+          </div>
+        </label>
+
         <p class="text-nro"> 
           Si preferis comunicate con la vendedora: 
           <span> 

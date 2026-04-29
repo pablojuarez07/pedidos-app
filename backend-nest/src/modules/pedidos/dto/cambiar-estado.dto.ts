@@ -3,5 +3,5 @@ import { IsIn } from 'class-validator';
 
 export class CambiarEstadoDto {
   @IsIn(['pendiente', 'cancelado', 'entregado'])
-  estado: 'pendiente' | 'cancelado' | 'entregado';
+  estado!: 'pendiente' | 'cancelado' | 'entregado';
 }

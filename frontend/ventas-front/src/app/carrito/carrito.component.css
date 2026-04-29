@@ -118,9 +118,9 @@
   font-size: 2vh;
 }
 
-.estado {
+.estado, .tipo_pago {
   border-radius: 3px;
-  width: 20vh;
+  width: 21vh;
   height: 4vh;
   display: flex;
   justify-content: center;
@@ -132,11 +132,11 @@
   background-color: #d4c92b;
 }
 
-.cancelado {
-  background-color: #a10d0d;
+.cancelado, .no {
+  background-color: #d41010;
 }
 
-.entregado {
+.entregado, .si{
   background-color: #0fa958;
 }
 

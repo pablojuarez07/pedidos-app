@@ -202,12 +202,12 @@
 }
 
 /* Cancelar */
-.form-buttons button[type="button"] {
+.form-buttons .cancel-btn {
   background: #eee;
   color: #333;
 }
 
-.form-buttons button[type="button"]:hover {
+.form-buttons .cancel-btn:hover {
   background: #ddd;
 }
 
@@ -302,6 +302,15 @@
 .editar-btn:hover {
   background-color: #23d340;
   transform: scale(1.1);
+}
+
+.form-buttons .delete-btn {
+  background-color: #e53935;
+  color: white;
+}
+
+.form-buttons .delete-btn:hover {
+  background-color: #d32f2f;
 }
 
 /* Animación */

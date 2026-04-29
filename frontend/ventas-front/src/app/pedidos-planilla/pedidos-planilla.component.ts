@@ -16,7 +16,26 @@ export class PedidosPlanillaComponent {
   }[] = [];
   menuAbierto: any = null;
 
+  isMobile = window.innerWidth < 768;
+
+  // Ancho de cada columna en píxeles (ajustar según diseño)
+  columnWidths: number[] = [125, 208, 135, 80, 122, 119, 106, 135, 80, 150]
+  // genera grid dinamico
+  get columnas(): string {
+    return this.columnWidths.map(w => w + 'px').join(' ');
+  }
+
+  startX = 0;
+  startWidth = 0;
+  colIndex = 0;
+
   ngOnInit() {
+    this.isMobile = window.innerWidth < 768;
+
+    if (this.isMobile) {
+      this.columnWidths = [125, 208, 135, 80, 122, 119, 106, 135, 80, 150];
+    }
+
     this.getPedidos();
   }
 
@@ -107,4 +126,26 @@ export class PedidosPlanillaComponent {
   onClickOutside() {
     this.menuAbierto = null;
   }
+
+  startResize(event: MouseEvent, index: number) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.startX = event.clientX;
+    this.startWidth = this.columnWidths[index];
+    this.colIndex = index;
+
+    document.addEventListener('mousemove', this.onResize);
+    document.addEventListener('mouseup', this.stopResize);
+  }
+
+  onResize = (event: MouseEvent) => {
+    const diff = event.clientX - this.startX;
+    this.columnWidths[this.colIndex] = Math.max(60, this.startWidth + diff);
+  };
+
+  stopResize = () => {
+    document.removeEventListener('mousemove', this.onResize);
+    document.removeEventListener('mouseup', this.stopResize);
+  };
 }

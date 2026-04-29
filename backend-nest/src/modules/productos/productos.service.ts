@@ -216,4 +216,28 @@ export class ProductosService {
       throw new InternalServerErrorException('Error al actualizar producto');
     }
   }
+
+  async eliminarProducto(id: number) {
+    try {
+      const result = await this.database.query(
+        "SELECT * FROM productos WHERE id = $1",
+        [id]
+      );
+
+      if (result.rows.length === 0) {
+        throw new BadRequestException('Producto no encontrado');
+      } else {
+        const { rows } = await this.database.query(
+          "DELETE FROM productos WHERE id = $1 RETURNING *",
+          [id]
+        );
+
+        this.socketGateway.server.emit("producto_eliminado", { id });
+        return rows[0];
+      }
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Error al eliminar producto');
+    } 
+  }
 }

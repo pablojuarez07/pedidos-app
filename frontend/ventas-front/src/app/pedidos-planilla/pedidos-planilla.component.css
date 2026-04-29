@@ -12,6 +12,7 @@
   height: 100%;
   overflow: auto;   /* X + Y */
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Header */
@@ -24,6 +25,10 @@
   font-weight: bold;
 }
 
+.sheet-header div {
+  font-size: 10px;
+}
+
 /* Body */
 .sheet-body {
   display: block;
@@ -32,21 +37,12 @@
 /* Grilla compartida */
 .sheet-header,
 .sheet-row {
-  grid-template-columns:
-    10vw
-    15vw
-    10vw
-    6vw
-    10vw
-    10vw
-    10vw
-    10vw
-    10vw;
+  display: grid;
 }
 
 /* Filas */
 .sheet-row {
-  display: grid;
+  height: 40px;
 }
 
 /* Celdas */
@@ -66,12 +62,34 @@
   background: #e6e7eb;
 }
 
+.header-cell {
+  position: relative;
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.resizer:hover {
+  background: rgba(0,0,0,0.15);
+}
+
 /* Estados */
 .estado {
   text-align: center;
   border-radius: 4px;
   font-size: 15px;
   padding: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 .estado.entregado { background:#d4edda; color:#155724; }
 .estado.pendiente { background:#fff3cd; color:#856404; }

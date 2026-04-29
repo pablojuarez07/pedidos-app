@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import api from "../services/api";
 import { ProductCardComponent } from '../components/product-card/product-card.component';
 import { CommonModule } from '@angular/common';
@@ -26,6 +26,9 @@ import { ChatbotComponent } from "../chatbot/chatbot.component";
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  
+  constructor( private socketService: SocketService ) {}
+
   adminForm = false;
   productForm = false;
   productos: any[] = [];
@@ -55,8 +58,6 @@ export class HomeComponent {
 
     this.lastScrollTop = scrollTop;
   }
-
-  constructor(private socketService: SocketService) {}
 
   @ViewChild(ProductInfoComponent)
   infoPanel!: ProductInfoComponent;
@@ -113,7 +114,14 @@ export class HomeComponent {
       } else {
         this.productosOriginales.push(producto);
       }
-  });
+    });
+
+    this.socketService.listen("producto_eliminado").subscribe((data) => {
+      console.log("producto eliminado id: ", data.id);
+      this.productosOriginales = this.productosOriginales.filter(p => p.id !== data.id);
+      this.productos = [...this.productosOriginales];
+
+    });
   }
 
   initClientId() {
@@ -201,4 +209,5 @@ export class HomeComponent {
 
     return this.productos.filter(p => p.stock > 0);
   }
+
 }

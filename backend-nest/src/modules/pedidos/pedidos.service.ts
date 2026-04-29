@@ -68,12 +68,20 @@ export class PedidosService {
       );
 
       const total = dto.cantidad * dto.precio_unitario;
+      const pagadoFinal = dto.pagado ?? false;
 
       const pedidoResult = await conn.query(
-        `INSERT INTO pedidos (fecha, total, estado, nombre_comprador, telefono, client_id)
-        VALUES (NOW(), $1, 'pendiente', $2, $3, $4)
+        `INSERT INTO pedidos 
+        (fecha, total, estado, nombre_comprador, telefono, client_id, tipo_pago, pagado, fecha_pago, payment_id)
+        VALUES (NOW(), $1, 'pendiente', $2, $3, $4, $5, $6,
+          CASE 
+            WHEN $6 = true THEN NOW() 
+            ELSE NULL 
+          END,
+          $7
+        )
         RETURNING id`,
-        [total, dto.nombre_comprador, dto.telefono, dto.client_id],
+        [total, dto.nombre_comprador, dto.telefono, dto.client_id, dto.tipo_pago, pagadoFinal, dto.payment_id ?? null ],
       );
 
       const pedido_id = pedidoResult.rows[0].id;
@@ -110,9 +118,12 @@ export class PedidosService {
         p.total,
         p.nombre_comprador,
         p.telefono,
+        p.pagado,
+        p.tipo_pago,
         pd.cantidad,
         pd.precio_unitario,
         pr.nombre AS producto_nombre
+
       FROM pedidos p
       JOIN pedido_detalle pd ON pd.pedido_id = p.id
       JOIN productos pr ON pr.id = pd.producto_id
@@ -130,6 +141,7 @@ export class PedidosService {
       `SELECT 
         p.id, p.fecha, p.total, p.estado,
         p.nombre_comprador, p.telefono,
+        p.pagado, p.tipo_pago,
         pr.nombre, pr.imagen,
         pd.cantidad, pd.precio_unitario
       FROM pedidos p
@@ -158,6 +170,7 @@ export class PedidosService {
       SELECT 
         p.id, p.fecha, p.total, p.estado,
         p.nombre_comprador, p.telefono,
+        p.pagado, p.tipo_pago,
         pr.nombre, pr.imagen,
         pd.cantidad, pd.precio_unitario
       FROM pedidos p
@@ -332,5 +345,73 @@ export class PedidosService {
     } finally {
       conn.release();
     }
+  }
+
+  async marcarPagado(id: number, pagado: boolean) {
+    const conn = await this.database.getClient();
+
+    try {
+      await conn.query('BEGIN');
+
+      // Verificar pedido
+      const resultPedido = await conn.query(
+        'SELECT estado, pagado FROM pedidos WHERE id = $1 FOR UPDATE',
+        [id]
+      );
+
+      if (!resultPedido.rows.length) {
+        throw new NotFoundException('Pedido no existe');
+      }
+
+      const pedido = resultPedido.rows[0];
+
+      // Reglas de negocio
+      if (pedido.estado === 'cancelado' && pagado) {
+        throw new BadRequestException('No se puede pagar un pedido cancelado');
+      }
+
+      // Evitar updates innecesarios
+      if (pedido.pagado === pagado) {
+        return { ok: true };
+      }
+
+      // Actualizar
+      await conn.query(
+        `UPDATE pedidos 
+        SET pagado = $1,
+            fecha_pago = CASE 
+              WHEN $1 = true THEN NOW() 
+              ELSE NULL 
+            END
+        WHERE id = $2`,
+        [pagado, id]
+      );
+
+      await conn.query('COMMIT');
+
+      // Socket
+      this.socketGateway.server.emit('pedido_actualizado', {
+        pedido_id: id,
+        pagado,
+      });
+
+      return { ok: true };
+
+    } catch (error) {
+      await conn.query('ROLLBACK');
+      console.error(error);
+      throw new InternalServerErrorException('Error actualizando pago');
+    } finally {
+      conn.release();
+    }
+  }
+
+  async buscarPorPaymentId(paymentId?: string) {
+    const { rows } = await this.database.query(
+      `SELECT id FROM pedidos WHERE payment_id = $1`,
+      [paymentId]
+    );
+
+    return rows[0] || null;
   }
 }

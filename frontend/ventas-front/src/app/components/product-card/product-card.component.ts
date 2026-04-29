@@ -3,6 +3,7 @@ import { Component, Input, ViewChild, Output, EventEmitter, signal } from '@angu
 import { ProductInfoComponent } from "../product-info/product-info.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import api from '../../services/api';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -92,5 +93,17 @@ export class ProductCardComponent {
     this.isEditOpen = false;
   }
 
+  async eliminarProducto() {
+    const confirmado = confirm(`¿Seguro que querés eliminar "${this.producto.nombre}"?`);
 
+    if (!confirmado) return;
+
+    try {
+      await api.put(`/productos/delete/${this.producto.id}`, { id: this.producto.id });
+      this.cerrarFormulario();
+
+    } catch (err) {
+      console.error("error al eliminar producto: ", err);
+    }
+  }
 }
