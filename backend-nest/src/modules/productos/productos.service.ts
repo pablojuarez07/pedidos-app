@@ -23,7 +23,7 @@ export class ProductosService {
 
   async getProductos() {
     try {
-        const result = await this.database.query("SELECT * FROM productos");
+        const result = await this.database.query("SELECT * FROM productos WHERE activo = true ORDER BY id DESC");
         const rows = result.rows
     
         // agregar URL de la imagen
@@ -111,8 +111,8 @@ export class ProductosService {
       // 3️⃣ Guardar producto con URL
       const sql = `
         INSERT INTO productos
-        (nombre, precio, descripcion, stock, category, imagen)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        (nombre, precio, descripcion, stock, category, imagen, activo)
+        VALUES ($1, $2, $3, $4, $5, $6, true)
         RETURNING *
       `;
   
@@ -158,7 +158,7 @@ export class ProductosService {
     try {
   
       const result = await this.database.query(
-        "SELECT * FROM productos WHERE category = $1",
+        "SELECT * FROM productos WHERE category = $1 AND activo = true ORDER BY id DESC",
         [categoria]
       );
   
@@ -226,18 +226,37 @@ export class ProductosService {
 
       if (result.rows.length === 0) {
         throw new BadRequestException('Producto no encontrado');
-      } else {
-        const { rows } = await this.database.query(
-          "DELETE FROM productos WHERE id = $1 RETURNING *",
-          [id]
-        );
-
-        this.socketGateway.server.emit("producto_eliminado", { id });
-        return rows[0];
       }
+
+      const usado = await this.database.query(`
+        SELECT 1
+        FROM pedido_detalle
+        WHERE producto_id = $1
+        LIMIT 1
+      `, [id]);
+
+      if (usado.rowCount > 0) {
+        await this.database.query(`
+          UPDATE productos
+          SET activo = false
+          WHERE id = $1
+        `, [id]);
+      } else {
+        await this.database.query(`
+          DELETE FROM productos
+          WHERE id = $1
+        `, [id]);
+      }
+
+      this.socketGateway.server.emit("producto_eliminado", { id });
+
+      return { ok: true };
+
     } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+
       console.error(error);
       throw new InternalServerErrorException('Error al eliminar producto');
-    } 
+    }
   }
 }
